@@ -68,8 +68,20 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+      this.logger.log(`Try deleting the user with the id: ${id}...`);
+  
+      if (!Types.ObjectId.isValid(id))
+        throw new BadRequestException("Bad id");
+  
+      const user = await this.userModel.findByIdAndRemove(id).exec();
+      
+      if (!user)
+        throw new BadRequestException("User does not exist"); 
+      
+      this.logger.log(`User deleted:`, user);
+
+      return user;
   }
 
 }
