@@ -64,8 +64,21 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+
+    this.logger.log(`Try updating the user with the id: ${id}...`);
+
+    if (!Types.ObjectId.isValid(id))
+        throw new BadRequestException("Bad id");
+        
+    //const user = await this.userModel.findByIdAndUpdate(id, updateUserDto).exec();
+    const user = await this.userModel.updateOne({_id : id}, updateUserDto);
+      
+      if (!user)
+        throw new BadRequestException("User does not exist"); 
+      
+
+    return user;
   }
 
   async remove(id: string) {
