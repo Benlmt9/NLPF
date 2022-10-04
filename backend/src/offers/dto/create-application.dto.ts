@@ -1,5 +1,5 @@
-import {IsNotEmpty, IsAscii, IsOptional, IsIn, IsMongoId, IsInt, IsDate, IsNumber, IsNumberString} from 'class-validator';
-import { OFFER_STATE } from '../entities/offer.entity';
+import {IsNotEmpty, IsAscii, IsOptional, IsMongoId, IsNumberString} from 'class-validator';
+
 
 export class CreateApplicationDto {
     @IsAscii()
