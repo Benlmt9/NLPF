@@ -77,7 +77,6 @@ export class UsersService {
       if (!user)
         throw new BadRequestException("User does not exist"); 
       
-
     return user;
   }
 
