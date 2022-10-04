@@ -2,9 +2,12 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types} from 'mongoose';
 import { Offer } from 'src/schemas/offers.schema';
+import { USER_TYPE } from 'src/users/entities/user.entity';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
+import { FindOffersFilter } from './entities/offer.entity';
+
 
 @Injectable()
 export class OffersService {
@@ -20,22 +23,56 @@ export class OffersService {
     return createdOffer.save();
   }
 
-  findAll() {
-    this.logger.log("Try getting all offers of the database...");
-    return this.offerModel.find().exec();
+
+  
+  findAll(filter? : FindOffersFilter) {
+
+    if (!filter){
+      this.logger.log("Try getting all offers of the database...");
+      return this.offerModel.find().exec();
+    }
+
+    let queryFilter;
+
+    if (USER_TYPE[filter.type] == USER_TYPE['CANDIDATE'])
+    {
+      //candidat => on return toutes les offers sauf les HIDDEN
+      queryFilter = { state : 'HIDDEN' };
+    }
+    else if (USER_TYPE[filter.type] == USER_TYPE['COMPANY'])
+    {
+      //company => on return toutes les offers où le filter.id match.
+      queryFilter = { ownerId : filter.id};
+    }
+
+    const res = this.offerModel.find(queryFilter).exec(); 
+
+    return res;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} offer`;
+  async findOne(id: string) {
+    this.logger.log(`Try getting the offer with the id: ${id}...`);
+
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException("Bad id");
+
+    const offer = await this.offerModel.findById(id);
+    
+    if (!offer)
+      throw new BadRequestException("Offer does not exist"); 
+    
+    this.logger.log(`Offer found:`, offer);
+
+    return offer;
   }
 
-  /*
-  update(id: number, updateOfferDto: UpdateOfferDto) {
-    return `This action updates a #${id} offer`;
-  }
-  */
+
+//TODO get offers (entreprise) : return que les offers de 
 
   async apply(id: string, createApplicationDto: CreateApplicationDto) {
+
+    const applicationId = "TODO";
+    const application = "TODO";
 
 
     this.logger.log(`Try updating the offer with the id: ${id}...`);
@@ -46,7 +83,7 @@ export class OffersService {
 
     const updateParams = {
       $push: {
-          applications: {...createApplicationDto}
+          applications: {...createApplicationDto, applicationId}
       }
     };
 
@@ -57,61 +94,20 @@ export class OffersService {
       if (!offer)
         throw new BadRequestException("Offer does not exist"); 
 
-
     return offer;
   }
 
   async update(id: string, updateOfferDto: UpdateOfferDto) {
-
-
     this.logger.log(`Try updating the offer with the id: ${id}...`);
 
     if (!Types.ObjectId.isValid(id))
         throw new BadRequestException("Bad id");
 
-
-    const updateParams = {
-      $push: {
-          applications: { state: "REFUSED"}
-      }
-    };
-
-    /*const offer = await this.offerModel.updateOne(
-        {
-          "_id" : id,
-          "applications": { $elemMatch: { candidateId: "97524c1d1quizz45d5cf1ec2"} }
-        } 
+        const offer = await this.offerModel.updateOne({_id : id}, updateOfferDto);
       
-      , updateParams
-      );*/
-
-    const offer = this.offerModel.update(
-      { _id: id, "applications.candidateId": "97524c1d1quizz45d5cf1ec2" },
-      {
-          $set: {
-              "applications.$.state": "CIIBIEBE",
-           }
-      }
-  )
-
-  /*
-  const itemId = 2;
-const query = {
-  item._id: itemId 
-};
-Person.findOne(query).then(doc => {
-  item = doc.items.id(itemId );
-  item["name"] = "new name";
-  item["value"] = "new value";
-  doc.save();
-  */
-      if (!offer)
-        throw new BadRequestException("Offer does not exist"); 
-
-
-    return offer;
-  }
-  remove(id: number) {
-    return `This action removes a #${id} offer`;
+        if (!offer)
+          throw new BadRequestException("Offer does not exist"); 
+        
+      return offer;
   }
 }

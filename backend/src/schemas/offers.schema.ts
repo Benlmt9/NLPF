@@ -10,13 +10,13 @@ export class Offer extends Document{
   @Prop({required: true})
   description: string;
 
-  @Prop()
-  ownerID : string;
+  @Prop({required: true})
+  ownerId : string;
 
-  @Prop()
-  quizId: string;
+  @Prop({nullable : true})
+  quizId?: string;
 
-  @Prop()
+  @Prop({required: true})
   state: string;
 
 
@@ -24,7 +24,7 @@ export class Offer extends Document{
     candidateId: { type: String },
     quizResponseId: { type: String },
     message: { type: String },
-    state: { type: String }
+    applicationId: { type: String }
   }))
     applications: Record<string, any>[];
   

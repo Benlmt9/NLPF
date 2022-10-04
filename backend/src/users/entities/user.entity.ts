@@ -1,4 +1,7 @@
 
-export const USER_TYPE = ["CANDIDATE", "COMPANY"];
+export enum USER_TYPE {
+    'CANDIDATE', 
+    'COMPANY'
+}
 
 export class User {}

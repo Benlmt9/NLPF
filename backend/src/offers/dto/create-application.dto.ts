@@ -22,8 +22,6 @@ export class CreateApplicationDto {
     @IsNotEmpty()
     candidateId: string;
 
-    //state?
-
     @IsOptional()
     quiz: QuizSummary;
 }

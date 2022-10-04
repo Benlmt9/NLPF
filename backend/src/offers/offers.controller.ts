@@ -23,26 +23,27 @@ export class OffersController {
     return this.offersService.findOne(id);
   }
 
-  /*
+  @Get('/company/:companyId')
+  findAllCompany(@Param('companyId') companyId: string) {
+    return this.offersService.findAll({type: "CANDIDATE", id : companyId});
+  }
+
+  @Get('/candidate/:candidateId')
+  findAllCandidate(@Param('candidateId') candidateId: string) {
+    return this.offersService.findAll({type: "COMPANY", id : candidateId});
+  }
+  
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
     return this.offersService.update(id, updateOfferDto);
   }
-  */
+  
 
-  @Patch('/apply/:id/')
+  @Post('/apply/:id/')
   apply(@Param('id') id: string, @Body() createApplicationDto: CreateApplicationDto) {
-    return this.offersService.apply(id, createApplicationDto);
+    const offerUpdate = this.offersService.apply(id, createApplicationDto);
+
+    return offerUpdate ;//&& applicationCreated;
   }
 
-  @Patch('/application/:id/')
-  updateApplication(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
-    return this.offersService.update(id, updateOfferDto);
-  }
-
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.offersService.remove(+id);
-  }
 }

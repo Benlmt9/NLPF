@@ -1,6 +1,10 @@
 import {IsNotEmpty, IsAscii, IsOptional, IsIn} from 'class-validator';
 import { OFFER_STATE } from '../entities/offer.entity';
 
+
+const offerStateValueArray = Object.values(OFFER_STATE);
+
+
 export class CreateOfferDto {
     @IsNotEmpty()
     @IsAscii()
@@ -16,6 +20,6 @@ export class CreateOfferDto {
     @IsOptional()
     quizId?: string;
 
-    @IsIn(OFFER_STATE)
+    @IsIn(offerStateValueArray)
     state: string;
 }

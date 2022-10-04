@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmpty, IsAscii, IsEmpty, IsIn} from 'class-validator';
 import { USER_TYPE } from '../entities/user.entity';
 
+const userTypeValueArray = Object.values(USER_TYPE)
 
 export class CreateUserDto {
     @IsNotEmpty()
@@ -17,7 +18,7 @@ export class CreateUserDto {
     password: string;
 
     @IsNotEmpty()
-    @IsIn(USER_TYPE)
+    @IsIn(userTypeValueArray)
     type: string;
 
     @IsEmpty()
