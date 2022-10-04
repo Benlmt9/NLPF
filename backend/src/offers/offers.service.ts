@@ -68,9 +68,36 @@ export class OffersService {
   }
 
 
-//TODO get offers (entreprise) : return que les offers de 
-
   async apply(id: string, createApplicationDto: CreateApplicationDto) {
+
+    // TODO : application model à créer avant, pour en recup l'id.
+    const applicationId = "TODO";
+    const application = "TODO";
+
+
+    this.logger.log(`Try updating the offer with the id: ${id}...`);
+
+    if (!Types.ObjectId.isValid(id))
+        throw new BadRequestException("Bad id");
+       
+
+    const updateParams = {
+      $push: {
+          applications: {...createApplicationDto, applicationId}
+      }
+    };
+
+    const offer = await this.offerModel.updateOne(
+        {_id : id}, updateParams
+      );
+
+      if (!offer)
+        throw new BadRequestException("Offer does not exist"); 
+
+    return offer;
+  }
+
+  async applyUpdate(id: string, createApplicationDto: CreateApplicationDto) {
 
     const applicationId = "TODO";
     const application = "TODO";

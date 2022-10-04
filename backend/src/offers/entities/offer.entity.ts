@@ -13,9 +13,9 @@ export class FindOffersFilter {
     @IsIn(userTypeValueArray)
     @IsNotEmpty()
     type : string;
-    
-    @IsMongoId()
+
     @IsOptional()
+    @IsMongoId()
     id? : string;
   };
   

@@ -39,11 +39,19 @@ export class OffersController {
   }
   
 
-  @Post('/apply/:id/')
-  apply(@Param('id') id: string, @Body() createApplicationDto: CreateApplicationDto) {
-    const offerUpdate = this.offersService.apply(id, createApplicationDto);
+  @Post('/apply/:offerId/')
+  apply(@Param('offerId') offerId: string, @Body() createApplicationDto: CreateApplicationDto) {
+    const offerUpdate = this.offersService.apply(offerId, createApplicationDto);
 
     return offerUpdate ;//&& applicationCreated;
   }
+
+  @Patch('/apply/:offerId/')
+  applyUpdate(@Param('offerId') offerId: string, @Body() createApplicationDto: CreateApplicationDto) {
+    const offerUpdate = this.offersService.apply(offerId, createApplicationDto);
+
+    return offerUpdate ;//&& applicationCreated;
+  }
+
 
 }

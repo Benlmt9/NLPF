@@ -1,19 +1,5 @@
-import {IsNotEmpty, IsAscii, IsOptional, IsIn, IsMongoId, IsInt, IsDate} from 'class-validator';
+import {IsNotEmpty, IsAscii, IsOptional, IsIn, IsMongoId, IsInt, IsDate, IsNumber, IsNumberString} from 'class-validator';
 import { OFFER_STATE } from '../entities/offer.entity';
-
-class QuizSummary {
-    @IsNotEmpty()
-    @IsMongoId()
-    quizResultId: string;
-
-    @IsNotEmpty()
-    @IsInt()
-    score: Number;
-
-    @IsNotEmpty()
-    @IsInt()
-    timeSeconds: Number;
-}
 
 export class CreateApplicationDto {
     @IsAscii()
@@ -23,5 +9,10 @@ export class CreateApplicationDto {
     candidateId: string;
 
     @IsOptional()
-    quiz: QuizSummary;
+    @IsMongoId()
+    quizResponseId?: string;
+
+    @IsOptional()
+    @IsNumberString()
+    score?: Number;
 }

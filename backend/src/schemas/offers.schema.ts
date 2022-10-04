@@ -19,12 +19,24 @@ export class Offer extends Document{
   @Prop({required: true})
   state: string;
 
+  @Prop({required: true})
+  remote: string;
 
+  @Prop({required: true})
+  city: string;
+
+  @Prop({required: true})
+  date: Date;
+
+  @Prop([String])
+  rejectedApplications: string[];
+  
   @Prop(raw({
     candidateId: { type: String },
     quizResponseId: { type: String },
     message: { type: String },
-    applicationId: { type: String }
+    applicationId: { type: String },
+    score: { type: String }
   }))
     applications: Record<string, any>[];
   
