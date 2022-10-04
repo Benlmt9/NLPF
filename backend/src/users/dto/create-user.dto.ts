@@ -1,4 +1,6 @@
-import { IsEmail, IsNotEmpty, IsAscii, IsEmpty} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsAscii, IsEmpty, IsIn} from 'class-validator';
+import { USER_TYPE } from '../entities/user.entity';
+
 
 export class CreateUserDto {
     @IsNotEmpty()
@@ -15,6 +17,10 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     password: string;
+
+    @IsNotEmpty()
+    @IsIn(USER_TYPE)
+    type: string;
 
     @IsEmpty()
     tokenHash : string;
