@@ -25,7 +25,7 @@ export class OffersService {
 
 
   
-  findAll(filter? : FindOffersFilter) {
+  async findAll(filter? : FindOffersFilter) {
 
     if (!filter){
       this.logger.log("Try getting all offers of the database...");
@@ -36,6 +36,7 @@ export class OffersService {
 
     if (USER_TYPE[filter.type] == USER_TYPE['CANDIDATE'])
     {
+      
       //candidat => on return toutes les offers sauf les HIDDEN
       queryFilter = { state : 'HIDDEN' };
     }
@@ -44,8 +45,10 @@ export class OffersService {
       //company => on return toutes les offers où le filter.id match.
       queryFilter = { ownerId : filter.id};
     }
+    
+    console.log(queryFilter);
 
-    const res = this.offerModel.find(queryFilter).exec(); 
+    const res = await this.offerModel.find(queryFilter).exec(); 
 
     return res;
   }

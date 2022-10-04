@@ -25,12 +25,12 @@ export class OffersController {
 
   @Get('/company/:companyId')
   findAllCompany(@Param('companyId') companyId: string) {
-    return this.offersService.findAll({type: "CANDIDATE", id : companyId});
+    return this.offersService.findAll({type: "COMPANY", id : companyId});
   }
 
   @Get('/candidate/:candidateId')
   findAllCandidate(@Param('candidateId') candidateId: string) {
-    return this.offersService.findAll({type: "COMPANY", id : candidateId});
+    return this.offersService.findAll({type: "CANDIDATE", id : candidateId});
   }
   
   @Patch(':id')

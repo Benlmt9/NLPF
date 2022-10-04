@@ -10,4 +10,5 @@ import { OffersModule } from './offers/offers.module';
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}
