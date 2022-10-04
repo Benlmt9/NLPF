@@ -21,6 +21,8 @@ export class User extends Document{
   @Prop({required: true,})
   passwordHash: string;
 
+  @Prop({required: true})
+  type: string;
 
   @Prop({ nullable: true })
   tokenHash?: string;
