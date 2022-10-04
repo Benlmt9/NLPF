@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { OffersService } from './offers.service';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
-import { CreateApplicationDto } from './dto/create-application.dto';
+import { CreateApplicationDto, UpdateApplicationDto } from './dto/create-application.dto';
 
 @Controller('offers')
 export class OffersController {
@@ -42,13 +42,18 @@ export class OffersController {
   @Post('/apply/:offerId/')
   apply(@Param('offerId') offerId: string, @Body() createApplicationDto: CreateApplicationDto) {
     const offerUpdate = this.offersService.apply(offerId, createApplicationDto);
+    
+    // TODO Application model en créer un aussi! 
 
     return offerUpdate ;//&& applicationCreated;
   }
 
   @Patch('/apply/:offerId/')
-  applyUpdate(@Param('offerId') offerId: string, @Body() createApplicationDto: CreateApplicationDto) {
-    const offerUpdate = this.offersService.apply(offerId, createApplicationDto);
+  applyUpdate(@Param('offerId') offerId: string, @Body() updateApplicationDto: UpdateApplicationDto) { 
+    //body contain : applicationId, state, reason? ;
+    const offerUpdate = this.offersService.applyUpdate(offerId, updateApplicationDto);
+    
+    // TODO Application model le update aussi (son state et reason!) 
 
     return offerUpdate ;//&& applicationCreated;
   }

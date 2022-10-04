@@ -16,3 +16,14 @@ export class CreateApplicationDto {
     @IsNumberString()
     score?: Number;
 }
+
+export class UpdateApplicationDto {
+    @IsNotEmpty()
+    state: string;
+
+    @IsOptional()
+    reason?: string;
+
+    @IsMongoId()
+    applicationId: string;
+}

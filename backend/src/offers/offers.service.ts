@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types} from 'mongoose';
 import { Offer } from 'src/schemas/offers.schema';
 import { USER_TYPE } from 'src/users/entities/user.entity';
-import { CreateApplicationDto } from './dto/create-application.dto';
+import { CreateApplicationDto, UpdateApplicationDto } from './dto/create-application.dto';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
 import { FindOffersFilter } from './entities/offer.entity';
@@ -97,32 +97,46 @@ export class OffersService {
     return offer;
   }
 
-  async applyUpdate(id: string, createApplicationDto: CreateApplicationDto) {
+  async applyUpdate(id: string, updateApplicationDto: UpdateApplicationDto) {
 
-    const applicationId = "TODO";
-    const application = "TODO";
+    //applicationId 
+    //reason
+    //state ?
+    // TODO class decorator @IsIn de updateapplicationdto et l'enum REJECTED ACCEPTED;
 
-
-    this.logger.log(`Try updating the offer with the id: ${id}...`);
-
+    this.logger.log(`Try updating state of an application related to the offer with the id: ${id}...`);
     if (!Types.ObjectId.isValid(id))
         throw new BadRequestException("Bad id");
        
+    if (updateApplicationDto.state == "REJECTED"){
 
-    const updateParams = {
-      $push: {
-          applications: {...createApplicationDto, applicationId}
-      }
-    };
+      const rejectedId = updateApplicationDto.applicationId;
 
-    const offer = await this.offerModel.updateOne(
-        {_id : id}, updateParams
-      );
+      console.log("create param...");
 
-      if (!offer)
-        throw new BadRequestException("Offer does not exist"); 
+      const updateParams = {
+        $push: {
+            rejectedApplications: rejectedId
+          }
+        };
 
-    return offer;
+        console.log("exec le update !...");
+
+        const offer = await this.offerModel.updateOne(
+          {_id : id}, updateParams
+        );
+  
+        if (!offer)
+          throw new BadRequestException("Offer does not exist"); 
+
+        return offer;
+    }
+
+    else if (updateApplicationDto.state == "ACCEPTED"){
+        // TODO
+    }
+
+    return "Attribute 'state' pas en 'REJECTED': rien n'a été update";
   }
 
   async update(id: string, updateOfferDto: UpdateOfferDto) {
