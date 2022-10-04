@@ -36,9 +36,7 @@ export class OffersService {
 
     if (USER_TYPE[filter.type] == USER_TYPE['CANDIDATE'])
     {
-      
-      //candidat => on return toutes les offers sauf les HIDDEN
-      queryFilter = { state : 'HIDDEN' };
+      queryFilter = { state : 'OPEN' };
     }
     else if (USER_TYPE[filter.type] == USER_TYPE['COMPANY'])
     {
