@@ -13,8 +13,8 @@ export class CreateOfferDto {
     @IsNotEmpty()
     ownerId: string;
 
-    @IsNotEmpty()
-    quizId: string;
+    @IsOptional()
+    quizId?: string;
 
     @IsIn(OFFER_STATE)
     state: string;
