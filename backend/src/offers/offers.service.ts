@@ -23,7 +23,6 @@ export class OffersService {
     return createdOffer.save();
   }
 
-
   
   async findAll(filter? : FindOffersFilter) {
 
@@ -40,11 +39,12 @@ export class OffersService {
     }
     else if (USER_TYPE[filter.type] == USER_TYPE['COMPANY'])
     {
-      //company => on return toutes les offers où le filter.id match.
+      if (!filter.id)
+        throw new BadRequestException("Missing company id");
+
       queryFilter = { ownerId : filter.id};
     }
     
-    console.log(queryFilter);
 
     const res = await this.offerModel.find(queryFilter).exec(); 
 

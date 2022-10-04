@@ -15,8 +15,8 @@ export class FindOffersFilter {
     type : string;
     
     @IsMongoId()
-    @IsNotEmpty()
-    id : string;
+    @IsOptional()
+    id? : string;
   };
   
 export class Offer {}

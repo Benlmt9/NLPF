@@ -18,7 +18,7 @@ export class OffersController {
     return this.offersService.findAll();
   }
 
-  @Get(':id')
+  @Get('get/:id')
   findOne(@Param('id') id: string) {
     return this.offersService.findOne(id);
   }
@@ -28,9 +28,9 @@ export class OffersController {
     return this.offersService.findAll({type: "COMPANY", id : companyId});
   }
 
-  @Get('/candidate/:candidateId')
-  findAllCandidate(@Param('candidateId') candidateId: string) {
-    return this.offersService.findAll({type: "CANDIDATE", id : candidateId});
+  @Get('/candidate')
+  findAllCandidate() {
+    return this.offersService.findAll({type: "CANDIDATE"});
   }
   
   @Patch(':id')
