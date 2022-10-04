@@ -5,11 +5,9 @@ import { USER_TYPE } from '../entities/user.entity';
 export class CreateUserDto {
     @IsNotEmpty()
     @IsAscii()
-    firstname: string;
+    name: string;
 
-    @IsNotEmpty()
-    @IsAscii()
-    lastname: string;
+    siret: string;
 
     @IsNotEmpty()
     @IsEmail()

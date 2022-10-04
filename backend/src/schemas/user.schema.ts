@@ -6,10 +6,10 @@ import { Document } from 'mongoose';
 @Schema()
 export class User extends Document{
   @Prop({required: true,})
-  firstname: string;
+  name: string;
   
-  @Prop({required: true,})
-  lastname: string;
+  @Prop({nullable : true})
+  siret?: string;
   
   @Prop({
     required: true,
