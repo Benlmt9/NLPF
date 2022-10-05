@@ -30,7 +30,7 @@ function Copyright(props: any) {
 }
 const theme = createTheme();
 
-export default function SignUp() {
+export default function CompanySignUp() {
   const [cookies, setCookie, removeCookie] = useCookies();
   const [isError, setIsError] = React.useState(false);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -147,7 +147,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link href="/signIn" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
