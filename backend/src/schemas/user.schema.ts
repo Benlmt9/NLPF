@@ -26,6 +26,9 @@ export class User extends Document{
 
   @Prop({ nullable: true })
   tokenHash?: string;
+
+  @Prop({ nullable: true })
+  avatarId?: string;
 }
 
 

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsAscii, IsEmpty, IsIn} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsAscii, IsEmpty, IsIn, IsNumberString, IsOptional} from 'class-validator';
 import { USER_TYPE } from '../entities/user.entity';
 
 const userTypeValueArray = Object.values(USER_TYPE)
@@ -23,4 +23,8 @@ export class CreateUserDto {
 
     @IsEmpty()
     tokenHash : string;
+
+    @IsOptional()
+    @IsNumberString()
+    avatarId: string;
 }
