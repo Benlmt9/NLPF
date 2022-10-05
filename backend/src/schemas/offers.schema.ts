@@ -28,6 +28,9 @@ export class Offer extends Document{
   @Prop({required: true})
   date: Date;
 
+  @Prop({nullable: true})
+  choosenCandidate?: string;
+
   @Prop([String])
   rejectedApplications: string[];
   

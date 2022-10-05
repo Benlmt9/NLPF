@@ -12,8 +12,8 @@ export class CreateOfferDto {
     @IsAscii()
     description: string;
 
-    @IsNotEmpty()
-    ownerId: string;
+    @IsOptional()
+    ownerId?: string;
 
     @IsOptional()
     quizId?: string;

@@ -60,7 +60,6 @@ export class AuthService {
     }
 
 
-    // TODO changer tokens par signUpResponse, qui contient Tokens + User id
     async signupLocal(authDto: AuthDto) : Promise<Tokens> {
 
         const passwordHash = await this.hashData(authDto.password);

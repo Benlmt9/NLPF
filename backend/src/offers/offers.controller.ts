@@ -1,15 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Headers, BadRequestException } from '@nestjs/common';
 import { OffersService } from './offers.service';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
 import { CreateApplicationDto, UpdateApplicationDto } from './dto/create-application.dto';
+import jwt_decode from "jwt-decode";
+import { isMongoId } from 'class-validator';
 
 @Controller('offers')
 export class OffersController {
   constructor(private readonly offersService: OffersService) {}
 
   @Post()
-  create(@Body() createOfferDto: CreateOfferDto) {
+  create(@Headers('Authorization') authHeader, @Body() createOfferDto: CreateOfferDto) { 
+    
+    if (authHeader){
+      const accesToken = authHeader.replace('Bearer', '').trim();
+      const jwtBody = jwt_decode(accesToken) as { sub: string}
+      const userId = jwtBody.sub;
+
+      if (!isMongoId(userId) && (!createOfferDto.ownerId)){
+        throw new BadRequestException("Provide an userId who own the offer (Bearer accestoken or request body");
+      }
+
+    return this.offersService.create({...createOfferDto, ownerId : userId});
+
+    }
+
     return this.offersService.create(createOfferDto);
   }
 
