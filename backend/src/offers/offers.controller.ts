@@ -56,7 +56,22 @@ export class OffersController {
   
 
   @Post('/apply/:offerId/')
-  apply(@Param('offerId') offerId: string, @Body() createApplicationDto: CreateApplicationDto) {
+  apply(@Headers('Authorization') authHeader, @Param('offerId') offerId: string, @Body() createApplicationDto: CreateApplicationDto) {
+
+
+    if (authHeader){
+      const accesToken = authHeader.replace('Bearer', '').trim();
+      const jwtBody = jwt_decode(accesToken) as { sub: string}
+      const userId = jwtBody.sub;
+
+      if (!isMongoId(userId) && (!createApplicationDto.candidateId)){
+        throw new BadRequestException("Provide an userId who own the offer (Bearer accestoken or request body");
+      }
+
+    return this.offersService.apply(offerId, {...createApplicationDto, candidateId : userId});
+
+    }
+
     const offerUpdate = this.offersService.apply(offerId, createApplicationDto);
     
     // TODO Application model en créer un aussi! 

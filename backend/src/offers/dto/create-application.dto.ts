@@ -1,12 +1,12 @@
-import {IsNotEmpty, IsAscii, IsOptional, IsMongoId, IsNumberString} from 'class-validator';
+import {IsNotEmpty, IsOptional, IsMongoId, IsNumberString, IsString} from 'class-validator';
 
 
 export class CreateApplicationDto {
-    @IsAscii()
+    @IsString()
     message: string;
 
-    @IsNotEmpty()
-    candidateId: string;
+    @IsOptional()
+    candidateId?: string;
 
     @IsOptional()
     @IsMongoId()
