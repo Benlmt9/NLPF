@@ -1,6 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
 import { AuthDto } from './dto';
 import * as bcrypt from 'bcrypt';
@@ -54,9 +54,17 @@ export class AuthService {
     async updateRtHash(userId: string, refreshToken: string){
         const newTokenHash = await this.hashData(refreshToken);
         
-        const temp = {modifiedCount: "", truc: ""}; //update user (where _id==userId) hashToken with the newTokenHash
+        // TODO vite
+        //update user (where _id==userId) hashToken with the newTokenHash
+        if (!Types.ObjectId.isValid(userId))
+            throw new BadRequestException("Bad id");
         
-        return temp.modifiedCount === "1";
+        //const user = await this.userModel.findByIdAndUpdate(id, updateUserDto).exec();
+        const res = await this.userModel.updateOne({_id : userId}, {tokenHash: newTokenHash});
+      
+        if (!res)
+            throw new BadRequestException("User update failed"); 
+      
     }
 
 
@@ -71,6 +79,8 @@ export class AuthService {
         newUser.save();
 
         const tokens = await this.getTokens(newUser._id, newUser.email);
+        
+        await this.updateRtHash(newUser._id, tokens.refreshToken);
 
         return tokens;
 
@@ -78,7 +88,24 @@ export class AuthService {
 
 
     
-    signinLocal() {
+    async signinLocal(authDto: AuthDto) : Promise<Tokens>{
+        const user = await this.userModel.findOne({email : authDto.email});
+
+        if (!user) {
+            throw new BadRequestException("User not found");
+        }
+
+        const passwordVerif = await bcrypt.compare(authDto.password, user.passwordHash);
+
+        if (!passwordVerif){
+            throw new ForbiddenException("Wrong password");
+        }
+
+        const tokens = await this.getTokens(user._id, user.email);
+
+        await this.updateRtHash(user._id, tokens.refreshToken);
+
+        return tokens;
         
     }
 
