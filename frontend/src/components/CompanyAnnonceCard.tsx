@@ -84,13 +84,13 @@ function CompanyAnnonceCard(props: any) {
         action={<>
           {(props.state == "OPEN")? 
             <>
-            <Button color="info" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "HIDDEN"); window.location.reload()}}><VisibilityIcon/>
-            </Button><Button color="error" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "CLOSED"); window.location.reload()}}><ClearIcon/></Button>
+            <Button color="info" onClick={async (e) => {await patchOffersState(cookies.auth_token, props.annonceId, "HIDDEN"); window.location.reload()}}><VisibilityIcon/>
+            </Button><Button color="error" onClick={async (e) => {await patchOffersState(cookies.auth_token, props.annonceId, "CLOSED"); window.location.reload()}}><ClearIcon/></Button>
             </> 
           :(props.state == "HIDDEN") ?
           <>
-          <Button color="info" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "OPEN"); window.location.reload()}}><VisibilityOffIcon/>
-          </Button><Button color="error" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "CLOSED"); window.location.reload()}}><ClearIcon/></Button>
+          <Button color="info" onClick={async (e) => {await patchOffersState(cookies.auth_token, props.annonceId, "OPEN"); window.location.reload()}}><VisibilityOffIcon/>
+          </Button><Button color="error" onClick={async (e) => {await patchOffersState(cookies.auth_token, props.annonceId, "CLOSED"); window.location.reload()}}><ClearIcon/></Button>
           </>
           :<></> }
         </>

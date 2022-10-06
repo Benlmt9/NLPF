@@ -1,5 +1,5 @@
 import { AppConfig } from "./AppConfig"
-
+import React from 'react';
 export async function getAnnonces(token) {
     const response = await fetch(AppConfig.api_ip + "offers/", {
         method: "GET",
@@ -117,7 +117,7 @@ export async function patchOffersState(token, id, state) {
         },
         body: JSON.stringify({state: state}),
     });
-
+    window.location.reload()
     return await response.json();
 }
 

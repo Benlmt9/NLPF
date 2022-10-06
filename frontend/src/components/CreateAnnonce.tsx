@@ -48,22 +48,23 @@ function CreateAnnonce(){
     const remoteSeclectHandleChange = (event: SelectChangeEvent) => {
         setRemote(event.target.value as string);
       };
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if (data.get("title") != undefined && data.get("state") != undefined &&  data.get("description") != undefined){
           setIsError(false)
-          postAnnonce(cookies.auth_token, {
+          await postAnnonce(cookies.auth_token, {
             title: data.get('title'),
             description: data.get('description'),
             state: data.get('state'),
-            ownerId: user.id,
+            //ownerId: user.id,
             city: data.get('city'),
             remote: data.get('remote'),
             date: datePickerValue,
         });
         }
         else{setIsError(true)}
+        
         window.location.reload()
       };
 return (
