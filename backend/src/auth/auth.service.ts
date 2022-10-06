@@ -30,7 +30,7 @@ export class AuthService {
                     },
                     {
                         secret: 'at-secret', // TODO remplace
-                        expiresIn: 60*15, //15 min
+                        expiresIn: 60*60, //60 min
                     }
                 ),
                 this.jwtService.signAsync(
