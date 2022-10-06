@@ -4,6 +4,16 @@ import { USER_TYPE } from "src/users/entities/user.entity";
 
 const userTypeValueArray = Object.values(USER_TYPE)
 
+export class AuthSignInDto{
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+
+    @IsNotEmpty()
+    @IsString()
+    password: string;
+
+}
 
 export class AuthDto{
     @IsEmail()

@@ -2,7 +2,7 @@ import { BadRequestException, ForbiddenException, Injectable, Logger } from '@ne
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
-import { AuthDto } from './dto';
+import { AuthDto, AuthSignInDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { Tokens } from './types';
 import { JwtService } from '@nestjs/jwt';
@@ -84,7 +84,7 @@ export class AuthService {
 
 
     
-    async signinLocal(authDto: AuthDto) : Promise<Tokens>{
+    async signinLocal(authDto: AuthSignInDto) : Promise<Tokens>{
         const user = await this.userModel.findOne({email : authDto.email});
 
         if (!user) {
