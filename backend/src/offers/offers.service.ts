@@ -71,8 +71,7 @@ export class OffersService {
   async apply(id: string, createApplicationDto: CreateApplicationDto) {
 
     // TODO : application model à créer avant, pour en recup l'id.
-    const applicationId = "TODO";
-    const application = "TODO";
+    const applicationId = new Types.ObjectId();
 
 
     this.logger.log(`Try updating the offer with the id: ${id}...`);
@@ -136,7 +135,7 @@ export class OffersService {
         // TODO
     }
 
-    return "Attribute 'state' pas en 'REJECTED': rien n'a été update";
+    return "Attribute 'state' need to be 'REJECTED' or 'ACCEPTED'";
   }
 
   async update(id: string, updateOfferDto: UpdateOfferDto) {

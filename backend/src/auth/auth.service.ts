@@ -54,12 +54,8 @@ export class AuthService {
     async updateRtHash(userId: string, refreshToken: string){
         const newTokenHash = await this.hashData(refreshToken);
         
-        // TODO vite
-        //update user (where _id==userId) hashToken with the newTokenHash
         if (!Types.ObjectId.isValid(userId))
             throw new BadRequestException("Bad id");
-        
-        //const user = await this.userModel.findByIdAndUpdate(id, updateUserDto).exec();
         const res = await this.userModel.updateOne({_id : userId}, {tokenHash: newTokenHash});
       
         if (!res)
