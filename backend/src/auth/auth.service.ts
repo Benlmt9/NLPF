@@ -109,8 +109,14 @@ export class AuthService {
         
     }
 
-    logout() {
+    async logout(userId : string) {
         
+        const res = await this.userModel.updateOne({_id : userId}, {tokenHash: null});
+
+        console.log("il est allé dans legout service", res, userId);
+
+        if (!res.modifiedCount)
+            throw new BadRequestException("Can't logout user ");
     }
 
     refreshTokens() {
