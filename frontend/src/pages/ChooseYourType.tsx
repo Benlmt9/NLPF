@@ -21,6 +21,8 @@ import { ButtonBase, Card, CardMedia } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 
+import MenuAppBar from '../components/AppBar';
+
 const useStyles = makeStyles({
     custom: {
       color: "#0C387F",
@@ -45,6 +47,7 @@ export default function ChooseYourType() {
 
   return (
                 <Box sx={{ width: '100%' }}>
+                      <MenuAppBar/>
       <Grid container justifyContent="space-around">
         <div>
         <Grid item xs={6} justifyContent="center">
