@@ -1,10 +1,16 @@
 import React from "react";
-
+import {createContext} from "react"
 const user = {
-    id: 1,
-    first_name: "caca",
-    last_name: "caca",
-    type: "CANDIDATE"
+    // Thibault id
+    //id: "633cca004f78b0015281f6e5",
+
+    // Apple 2 Id
+    id: "633f863dcd2973914f9a44c4",
+    email: "fd",
+    name: "caca",
+    type: "CANDIDATE",
+    avatar: 0,
 }
 
 export const UserContext = React.createContext({user, setUser: () => {}});
+// export const UserContext = createContext();
