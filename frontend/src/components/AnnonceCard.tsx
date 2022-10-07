@@ -21,7 +21,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { getCompanyWithId } from '../utils';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-
+import { alpha } from '@mui/material/styles';
+import Iconify from './Iconify';
 // function AnnonceCard(props: any) {
 
 //     return (
@@ -70,6 +71,18 @@ function AnnonceCard(props: any) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const IconWrapperStyle = styled('div')(({ theme }) => ({
+    margin: 'auto',
+    display: 'flex',
+    borderRadius: '50%',
+    alignItems: 'center',
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    justifyContent: 'center',
+    marginBottom: theme.spacing(3),
+  }));
+
   React.useEffect(() => {
     async function setOwnerInfoFromAPI() {
         const OwnerInfoFromApi = await getCompanyWithId(cookies.auth_token, props.ownerId);
@@ -86,9 +99,18 @@ function AnnonceCard(props: any) {
     <Card sx={{ minWidth: 300 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <IconWrapperStyle
+        sx={{
+          color: (theme : any ) => theme.palette['primary'].dark,
+          backgroundImage: (theme : any ) =>
+            `linear-gradient(135deg, ${alpha(theme.palette['primary'].dark, 0)} 0%, ${alpha(
+              theme.palette['primary'].dark,
+              0.24
+            )} 100%)`,
+        }}
+      >
+        <Iconify icon={'ant-design:apple-filled'} sx={24} height={24}/>
+      </IconWrapperStyle>
         }
         action={
           <IconButton aria-label="settings">

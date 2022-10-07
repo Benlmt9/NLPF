@@ -41,7 +41,7 @@ function DetailPage()
             onChange={(e)=> setMessage(e.target.value)}
             />
             <Button sx={{marginLeft: 'auto'}} variant="contained" endIcon={<SendIcon />} onClick=
-          {(e) => setUser()}> Postuler
+          {(e) => postApply(cookies.auth_token, annonceId, {message : message, candidateId: user.id})}> Postuler
             </Button>
         </div>
     )

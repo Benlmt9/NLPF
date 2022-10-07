@@ -13,7 +13,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import background from '../SignIn.png'
-
+import { postConnect } from '../utils';
+import { Cookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
+import { UserContext } from '../contexts/user';
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -30,12 +33,22 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [cookies, setCookie, removeCookie] = useCookies();
+  const { user, setUser } = React.useContext(UserContext);
+  
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
+    });
+    const tokens = await postConnect({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+    setCookie("auth_token", tokens.accesToken, {
+      path: "/"
     });
   };
 

@@ -4,15 +4,19 @@ import AnnonceCard from '../components/AnnonceCard';
 import { getAnnonces } from "../utils"
 import { useCookies } from "react-cookie";
 import LockOutlined from '@mui/icons-material/LockOutlined';
-
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 export default function AnnoncePage()
 {
     const [cookies, setCookie, removeCookie] = useCookies();
     const [AnnoncesList, setAnnoncesList] = React.useState([]);
     const [filteredAnnonceList, setFilteredAnnonceList] = React.useState([]);
     const [activeCloseFilter, setActiveCloseFilter] = React.useState(-1);
+    const [cityFilter, setCityFilter] = React.useState("");
+    const [remoteFilter, setRemoteFilter] = React.useState("");
+    const [search, setSearch] = React.useState("");
 
-    
     React.useEffect(() => {
         async function setAnnoncesListFromAPI() {
             const AnnoncesFromApi = await getAnnonces(cookies.auth_token);
@@ -25,6 +29,15 @@ export default function AnnoncePage()
         // console.log("annonce lisst :",AnnoncesList);
     }, []
     )
+
+    function handleRemote(event: any) {
+        if (event.currentTarget.value === "") {
+            setFilteredAnnonceList(AnnoncesList);
+        }
+        else {
+            setFilteredAnnonceList(AnnoncesList.filter((elt : any) => elt.title.toLowerCase().includes(event.currentTarget.value.toLowerCase())))
+        }
+    }
 
 
     function handleSearch(event: any) {
@@ -60,7 +73,41 @@ export default function AnnoncePage()
                         <Grid item>
                             <h1>Toutes les annonces</h1>
                         </Grid>
-                        <Grid item>
+                        {/* <Grid item>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">état de l'annonce</InputLabel>
+                            <Select
+                            required
+                            labelId="demo-simple-select-label"
+                            id="state"
+                            name="state"
+                            value={remoteFilter}
+                            label="Etat"
+                            onChange={()=>{}}
+                            >
+                            <MenuItem value={""}>Tout</MenuItem>
+                            <MenuItem value={"YES"}>Oui</MenuItem>
+                            <MenuItem value={"SEMI"}>Semie</MenuItem>
+                            <MenuItem value={"SEMI"}>No</MenuItem>
+                            </Select>
+                        </FormControl>
+                            </Grid> */}
+                            {/* <Grid item>
+                            <FormControl variant="outlined">
+                                <TextField
+                                    id="search-mission-bar"
+                                    type="search"
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                    size="small"
+                                />
+                            </FormControl>
+                        </Grid> */}
+                            <Grid item>
                             <FormControl variant="outlined">
                                 <TextField
                                     id="search-mission-bar"
