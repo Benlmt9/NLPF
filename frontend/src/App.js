@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import logo from './logo.svg';
 import './App.css';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
@@ -13,6 +12,7 @@ import CompanyAnnonceDetails from './pages/CompanyAnnonceDetails';
 import { useCookies } from "react-cookie";
 import { getUserDataWithToken } from './utils';
 import { UserContext } from './contexts/user';
+import { AppBar } from '@mui/material';
 
 const tmpuser = {
   // Thibault id
@@ -52,6 +52,7 @@ function App() {
   getUserDataWithToken(cookies.auth_token);
   return (
     <div>
+        <AppBar></AppBar>
       <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <Routes>

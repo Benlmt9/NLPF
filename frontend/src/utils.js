@@ -1,7 +1,7 @@
 import { AppConfig } from "./AppConfig"
 import React from 'react';
 export async function getAnnonces(token) {
-    const response = await fetch(AppConfig.api_ip + "offers/", {
+    const response = await fetch(AppConfig.api_ip + "offers/candidate/", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',

@@ -7,6 +7,7 @@ import LockOutlined from '@mui/icons-material/LockOutlined';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import MenuAppBar from '../components/AppBar';
 export default function AnnoncePage()
 {
     const [cookies, setCookie, removeCookie] = useCookies();
@@ -14,7 +15,7 @@ export default function AnnoncePage()
     const [filteredAnnonceList, setFilteredAnnonceList] = React.useState([]);
     const [activeCloseFilter, setActiveCloseFilter] = React.useState(-1);
     const [cityFilter, setCityFilter] = React.useState("");
-    const [remoteFilter, setRemoteFilter] = React.useState("");
+    const [remoteFilter, setRemoteFilter] = React.useState("TOUT");
     const [search, setSearch] = React.useState("");
 
     React.useEffect(() => {
@@ -30,26 +31,35 @@ export default function AnnoncePage()
     }, []
     )
 
-    function handleRemote(event: any) {
-        if (event.currentTarget.value === "") {
-            setFilteredAnnonceList(AnnoncesList);
-        }
-        else {
-            setFilteredAnnonceList(AnnoncesList.filter((elt : any) => elt.title.toLowerCase().includes(event.currentTarget.value.toLowerCase())))
-        }
+
+    async function handleRemote(event: any) {
+        setRemoteFilter(event.target.value as string);
     }
 
+    async function handleCity(event: any) {
+        setCityFilter(event.target.value as string);
+    }
 
-    function handleSearch(event: any) {
+    async function handleSearch(event: any) {
+        setSearch(event.target.value as string);
+    }
 
-        setActiveCloseFilter(-1);
-
-        if (event.currentTarget.value === "") {
-            setFilteredAnnonceList(AnnoncesList);
+    async function handleFilter() {
+        var tmpAnnonceFiltered = AnnoncesList;
+        console.log("filter : ", search, ",", cityFilter, ",", remoteFilter);
+        if (search != "") {
+            tmpAnnonceFiltered = tmpAnnonceFiltered.filter((elt : any) => elt.title.toLowerCase().includes(search.toLowerCase()));
+            console.log("a");
         }
-        else {
-            setFilteredAnnonceList(AnnoncesList.filter((elt : any) => elt.title.toLowerCase().includes(event.currentTarget.value.toLowerCase())))
+        if (cityFilter != "") {
+            tmpAnnonceFiltered = tmpAnnonceFiltered.filter((elt : any) => elt.city.toLowerCase().includes(cityFilter.toLowerCase()));
+            console.log("b");
         }
+        if (remoteFilter != "TOUT"){
+            tmpAnnonceFiltered = tmpAnnonceFiltered.filter((elt : any) => elt.remote === remoteFilter );
+            console.log("c");
+        }
+        setFilteredAnnonceList(tmpAnnonceFiltered);
     }
 
     function handleCloseFilter(val: any) {
@@ -62,7 +72,9 @@ export default function AnnoncePage()
             setActiveCloseFilter(-1);
         }
     }
+
     return (
+        <>
         <Box sx={{
             width: "800px",
             margin: "auto",
@@ -70,12 +82,9 @@ export default function AnnoncePage()
             <div>
                 <Stack spacing={1}>
                     <Grid container justifyContent="space-between" alignItems="center">
-                        <Grid item>
-                            <h1>Toutes les annonces</h1>
-                        </Grid>
-                        {/* <Grid item>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">état de l'annonce</InputLabel>
+                        <Grid item xs={2}>
+                            <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Remote</InputLabel>
                             <Select
                             required
                             labelId="demo-simple-select-label"
@@ -83,20 +92,21 @@ export default function AnnoncePage()
                             name="state"
                             value={remoteFilter}
                             label="Etat"
-                            onChange={()=>{}}
+                            onChange={handleRemote}
                             >
-                            <MenuItem value={""}>Tout</MenuItem>
-                            <MenuItem value={"YES"}>Oui</MenuItem>
-                            <MenuItem value={"SEMI"}>Semie</MenuItem>
-                            <MenuItem value={"SEMI"}>No</MenuItem>
+                            <MenuItem value={"TOUT"}>Tout</MenuItem>
+                            <MenuItem value={"FULL"}>Full</MenuItem>
+                            <MenuItem value={"SEMI"}>Semi</MenuItem>
+                            <MenuItem value={"NO"}>No</MenuItem>
                             </Select>
                         </FormControl>
-                            </Grid> */}
-                            {/* <Grid item>
+                            </Grid> 
+                            <Grid item>
                             <FormControl variant="outlined">
                                 <TextField
                                     id="search-mission-bar"
                                     type="search"
+                                    onChange={handleCity}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -104,9 +114,9 @@ export default function AnnoncePage()
                                         ),
                                     }}
                                     size="small"
-                                />
+                                    />
                             </FormControl>
-                        </Grid> */}
+                        </Grid>
                             <Grid item>
                             <FormControl variant="outlined">
                                 <TextField
@@ -120,8 +130,11 @@ export default function AnnoncePage()
                                         ),
                                     }}
                                     size="small"
-                                />
+                                    />
                             </FormControl>
+                        </Grid>
+                        <Grid item>
+                            <Button onClick={handleFilter}>Search</Button>
                         </Grid>
                     </Grid>
                     {filteredAnnonceList.length == 0 ?
@@ -136,15 +149,17 @@ export default function AnnoncePage()
                             <Divider />
                                 {filteredAnnonceList.map((entry: any) => {console.log("annonce:" , entry)
                                     return (
-                                        <AnnonceCard title={entry.title} description={entry.description} key={entry._id} ownerId={entry.ownerId} annonceId={entry._id} canApply={true}/>
-                                    )
-                                }
-                                )}
+                                        <AnnonceCard title={entry.title} description={entry.description} key={entry._id} ownerId={entry.ownerId} annonceId={entry._id} canApply={true} city={entry.city} remote={entry.remote}/>
+                                        )
+                                    }
+                                    )}
                             </Stack>
                         </div>
                     }
                 </Stack>
             </div>
         </Box>
+                    </>
     );
 }
+                                
