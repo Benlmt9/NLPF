@@ -24,6 +24,11 @@ export class UpdateApplicationDto {
     @IsOptional()
     reason?: string;
 
+    @IsOptional()
+    @IsMongoId()
+    choosenCandidate?: string;
+
+    @IsOptional()
     @IsMongoId()
     applicationId: string;
 }

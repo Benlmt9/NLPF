@@ -104,7 +104,10 @@ export class OffersService {
     //applicationId 
     //reason
     //state ?
+
     // TODO class decorator @IsIn de updateapplicationdto et l'enum REJECTED ACCEPTED;
+
+    //TODO : verif que l'annonce est pas CLOSED sinon pas possible d'applyUpddate
 
     this.logger.log(`Try updating state of an application related to the offer with the id: ${id}...`);
     if (!Types.ObjectId.isValid(id))
@@ -114,15 +117,11 @@ export class OffersService {
 
       const rejectedId = updateApplicationDto.applicationId;
 
-      console.log("create param...");
-
       const updateParams = {
         $push: {
             rejectedApplications: rejectedId
           }
         };
-
-        console.log("exec le update !...");
 
         const offer = await this.offerModel.updateOne(
           {_id : id}, updateParams
@@ -135,7 +134,26 @@ export class OffersService {
     }
 
     else if (updateApplicationDto.state == "ACCEPTED"){
-        // TODO
+        // TODO vite tester choosen candidate
+
+        //TODO => CLOSED l'annonce en plus !!
+
+        //choosenCandidate
+        if (!updateApplicationDto.choosenCandidate){
+          throw new BadRequestException("Should provide 'choosenCandidate' parameter to modify state to 'ACCEPTED' ");
+        }
+
+        const offer = await this.offerModel.updateOne(
+          { _id : id }, 
+          { choosenCandidate : updateApplicationDto.choosenCandidate,
+            state: "CLOSED" }
+        );
+
+        if (!offer)
+          throw new BadRequestException("Offer does not exist"); 
+
+        return offer;
+
     }
 
     return "Attribute 'state' need to be 'REJECTED' or 'ACCEPTED'";
