@@ -147,7 +147,7 @@ export default function AnnoncePage()
                         <div>
                             <Stack spacing={2}>
                             <Divider />
-                                {filteredAnnonceList.map((entry: any) => {console.log("annonce:" , entry)
+                                {filteredAnnonceList.map((entry: any) => {
                                     return (
                                         <AnnonceCard title={entry.title} description={entry.description} key={entry._id} ownerId={entry.ownerId} annonceId={entry._id} canApply={true} city={entry.city} remote={entry.remote}/>
                                         )

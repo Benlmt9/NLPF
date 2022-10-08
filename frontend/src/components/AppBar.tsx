@@ -72,7 +72,7 @@ const MenuAppBar = (props: any) => {
   }
 
   function displayMenuItem(item: any, i: any) {
-    if (item.admin === false || (item.admin === true && props.admin === true)) {
+    if (item.admin === false || (item.admin === true && user.type === "COMPANY")) {
       return (<Button
         key={i}
         onClick={(e: any) => { handleCloseNavMenu(); navigate(item.route) }}

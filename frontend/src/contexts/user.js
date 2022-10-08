@@ -5,10 +5,10 @@ const user = {
     //id: "633cca004f78b0015281f6e5",
 
     // Apple 2 Id
-    id: "633e93b3ccf73abfcc482dc5",
+    id: "63402f3d523f30c37800e55b",
     email: "fd",
     name: "caca",
-    type: "CANDIDATE",
+    type: "COMPANY",
     avatar: 0,
 }
 

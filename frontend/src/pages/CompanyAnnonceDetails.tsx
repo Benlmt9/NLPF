@@ -7,15 +7,20 @@ import LockOutlined from '@mui/icons-material/LockOutlined';
 import CompanyAnnonceCard from '../components/CompanyAnnonceCard';
 import { useParams } from "react-router-dom";
 import CompanyApplyCard from '../components/ApplyCard';
+import Tab from '@mui/material/Tab';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import TabContext from '@mui/lab/TabContext';
 
 export default function CompanyAnnonceDetails()
 {
     const [cookies, setCookie, removeCookie] = useCookies();
     const [ApplyList, setApplyList] = React.useState([]);
-    const [filteredApllyList, setFilteredApplyList
-    ] = React.useState([]);
+    const [ClosedApplyList, setClosedApplyList] = React.useState([]);
+    const [filteredApplyList, setFilteredApplyList] = React.useState([]);
     const [activeCloseFilter, setActiveCloseFilter] = React.useState(-1);
     const { myAnnonceId } = useParams();
+    const [valueTable, setValueTable] = React.useState("1");
 
     React.useEffect(() => {
         async function setApplyListFromAPI() {
@@ -23,11 +28,35 @@ export default function CompanyAnnonceDetails()
             console.log(AnnonceFromApi);
             setApplyList((AnnonceFromApi.applications == undefined)?[]:AnnonceFromApi.applications);
             setFilteredApplyList((AnnonceFromApi.applications == undefined)?[]:AnnonceFromApi.applications);
+            setClosedApplyList((AnnonceFromApi.rejectedApplications == undefined)?[]:AnnonceFromApi.rejectedApplications);
         }
         setApplyListFromAPI()
     }, []
     )
 
+    function isInClosed(applId:any){
+        if (ClosedApplyList.filter((elt: any) => elt == applId).length > 0){
+            console.log("is in",applId);
+            return true;
+        }
+        console.log("isn't in",applId);
+        console.log(ClosedApplyList)
+        return false;
+    }
+
+    const handleTableChange = (event: React.SyntheticEvent, newValue: string) => {
+        setValueTable(newValue);
+        console.log()
+        if (newValue=="1"){
+            setFilteredApplyList(ApplyList);
+        }
+        if (newValue=="2"){
+            setFilteredApplyList(ApplyList.filter((elt: any) => isInClosed(elt.applicationId)==false));
+        }
+        if (newValue=="3"){
+            setFilteredApplyList(ApplyList.filter((elt: any) => isInClosed(elt.applicationId)));
+        }
+      };
 
     function handleSearch(event: any) {
 
@@ -83,7 +112,19 @@ export default function CompanyAnnonceDetails()
                             </FormControl>
                         </Grid>
                     </Grid>
-                    {filteredApllyList.length == 0 ?
+                    <TabContext value={valueTable}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <TabList onChange={handleTableChange} aria-label="lab API tabs example">
+                            <Tab label="Toutes les annonces" value="1" />
+                            <Tab label="Ouverte" value="2" />
+                            <Tab label="Ouverte" value="3" />
+                        </TabList>
+                        </Box>
+                        <TabPanel value="1">Vous avez un total de {filteredApplyList.length} {(filteredApplyList.length >1)?"candidatures": "candidature"}</TabPanel>
+                        <TabPanel value="2">Vous avez {filteredApplyList.length} {(filteredApplyList.length >1)?"candidatures ouvertes": "candidature ouverte"}</TabPanel>
+                        <TabPanel value="3">Vous avez {filteredApplyList.length} {(filteredApplyList.length >1)?"candidatures refusées": "candidature refusée"}</TabPanel>
+                    </TabContext>
+                    {filteredApplyList.length == 0 ?
                             <Divider>
                                 <Typography variant="overline" display="block" style={{ color: "#838383" }}>
                                     Aucune annonce
@@ -93,9 +134,9 @@ export default function CompanyAnnonceDetails()
                         <div>
                             <Stack spacing={2}>
                             <Divider />
-                                {filteredApllyList.map((entry: any) => {console.log("annonce:" , entry)
+                                {filteredApplyList.map((entry: any) => {console.log("annonce:" , entry)
                                     return (
-                                        <CompanyApplyCard title={entry.title} content={entry.message} key={entry._id} candidateId={entry.candidateId}/>
+                                        <CompanyApplyCard title={entry.title} content={entry.message} key={entry._id} candidateId={entry.candidateId} annonceId={myAnnonceId} applicationId={entry.applicationId}/>
                                     )
                                 }
                                 )}

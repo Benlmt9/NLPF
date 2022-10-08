@@ -7,8 +7,10 @@ import { Box, Button, ButtonGroup, Divider, FormControl, Grid, InputAdornment, S
 import { postApply } from "../utils";
 import SendIcon from '@mui/icons-material/Send';
 import { UserContext } from '../contexts/user';
+import { useNavigate } from 'react-router-dom';
 function DetailPage()
 {
+    const navigate = useNavigate();
     const [cookies, setCookie, removeCookie] = useCookies();
     const [annonce, setAnnonce] = React.useState({title:"", description:"", ownerId:"", _id:""});
     const [message, setMessage] = React.useState({});
@@ -41,7 +43,7 @@ function DetailPage()
             onChange={(e)=> setMessage(e.target.value)}
             />
             <Button sx={{marginLeft: 'auto'}} variant="contained" endIcon={<SendIcon />} onClick=
-          {(e) => postApply(cookies.auth_token, annonceId, {message : message, candidateId: user.id})}> Postuler
+          {async(e) => {await postApply(cookies.auth_token, annonceId, {message : message, candidateId: user.id}); navigate('/annonces') }}> Postuler
             </Button>
         </div>
     )

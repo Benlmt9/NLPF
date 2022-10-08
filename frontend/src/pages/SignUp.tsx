@@ -15,22 +15,27 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import background from "../SignUp.png"
 import { postSignUp } from '../utils';
 import { useCookies } from "react-cookie";
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies();
   const [isError, setIsError] = React.useState(false);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (data.get('confirmPassword') === data.get('password')){
       setIsError(false)
-      postSignUp(cookies.auth_token, {
+      const tokens = await postSignUp(cookies.auth_token, {
         email: data.get('email'),
         password: data.get('password'),
         name: data.get('firstName') +" "+ data.get('lastName'),
         type: "CANDIDATE"
+      });
+      setCookie("auth_token", tokens.accesToken, {
+      path: "/"
     });
       console.log({
         email: data.get('email'),
@@ -38,8 +43,9 @@ export default function SignUp() {
         name: data.get('firstName'),
         lastname: data.get('lastName'),
         type: "CANDIDATE"
-    });}
-    else{setIsError(true)}
+      });}
+      else{setIsError(true)}
+    navigate("/annonces/")
   };
 
   return (

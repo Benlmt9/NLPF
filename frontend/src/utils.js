@@ -1,5 +1,6 @@
 import { AppConfig } from "./AppConfig"
 import React from 'react';
+
 export async function getAnnonces(token) {
     const response = await fetch(AppConfig.api_ip + "offers/candidate/", {
         method: "GET",
@@ -25,7 +26,7 @@ export async function getUserData(token, id) {
 }
 
 export async function getUserDataWithToken(token) {
-    const response = await fetch(AppConfig.api_ip + "users/id/", {
+    const response = await fetch(AppConfig.api_ip + "users/get/current", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -37,7 +38,7 @@ export async function getUserDataWithToken(token) {
 }
 
 export async function getAnnoncesOfCompany(token, id) {
-    const response = await fetch(AppConfig.api_ip + "offers/company/" + id, {
+    const response = await fetch(AppConfig.api_ip + "offers/company/"+id,{
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -95,8 +96,21 @@ export async function postApply(token, id, body) {
     return await response.json();
 }
 
+export async function patchApply(token, id, state, reason, applicationId) {
+    const response = await fetch(AppConfig.api_ip + "offers/apply/" + id, {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({applicationId: applicationId, state: state, reason: reason})
+    });
+
+    return await response.json();
+}
+
 export async function postSignUp(token, body) {
-    const response = await fetch(AppConfig.api_ip + "users", {
+    const response = await fetch(AppConfig.api_ip + "auth/local/signUp", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -140,19 +154,6 @@ export async function postConnect(body) {
         headers: {
             'Content-Type': 'application/json',
             // 'Authorization': 'Bearer ' + token,
-        },
-        body: JSON.stringify(body),
-    });
-
-    return await response.json();
-}
-
-export async function patchApply(token, id, body) {
-    const response = await fetch(AppConfig.api_ip + "offers/apply/" + id, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
         },
         body: JSON.stringify(body),
     });

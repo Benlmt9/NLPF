@@ -15,43 +15,37 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import background from "../SignUp.png"
 import { postSignUp } from '../utils';
 import { useCookies } from "react-cookie";
+import { useNavigate } from 'react-router-dom';
 
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 const theme = createTheme();
 
 export default function CompanySignUp() {
+  const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies();
   const [isError, setIsError] = React.useState(false);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (data.get('confirmPassword') === data.get('password')){
       setIsError(false)
-      postSignUp(cookies.auth_token, {
+      const tokens = await postSignUp(cookies.auth_token, {
         email: data.get('email'),
         password: data.get('password'),
-        name: data.get('firstName') +" "+ data.get('lastName'),
-        type: "CANDIDATE"
+        name: data.get('name'),
+        type: "COMPANY"
+      });
+      setCookie("auth_token", tokens.accesToken, {
+      path: "/"
     });
       console.log({
         email: data.get('email'),
         password: data.get('password'),
         name: data.get('firstName'),
         lastname: data.get('lastName'),
-        type: "CANDIDATE"
-    });}
-    else{setIsError(true)}
+        type: "COMPANY"
+      });}
+      else{setIsError(true)}
+    navigate("/annonces/")
   };
 
   return (
@@ -75,25 +69,15 @@ export default function CompanySignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3}}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="nName"
+                  label="Nom de l'entreprise"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -147,14 +131,13 @@ export default function CompanySignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/signIn" variant="body2">
+                <Link href="/" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

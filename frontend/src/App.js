@@ -13,16 +13,18 @@ import { useCookies } from "react-cookie";
 import { getUserDataWithToken } from './utils';
 import { UserContext } from './contexts/user';
 import { AppBar } from '@mui/material';
+import MenuAppBar from './components/AppBar';
+
 
 const tmpuser = {
   // Thibault id
   //id: "633cca004f78b0015281f6e5",
 
   // Apple 2 Id
-  id: "633e93b3ccf73abfcc482dc5",
+  id: "63402f3d523f30c37800e55b",
   email: "fd",
-  name: "pipi",
-  type: "CANDIDATE",
+  name: "piiipi",
+  type: "COMPANY",
   avatar: 0,
 };
 
@@ -43,18 +45,17 @@ function App() {
           console.log("ici",user);
           setUser(userFromAPI);
         }
-
     }
     setUserContextFromAPI();
-    console.log(user);
+    console.log("UwU",user);
 }, []
 )
   getUserDataWithToken(cookies.auth_token);
   return (
     <div>
-        <AppBar></AppBar>
       <UserContext.Provider value={{ user, setUser }}>
       <Router>
+      {/* <MenuAppBar></MenuAppBar> */}
         <Routes>
           <Route path='/signIn' element={<SignIn></SignIn>} />
           <Route path='/' element={<SignIn></SignIn>} />

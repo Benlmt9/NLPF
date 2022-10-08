@@ -17,6 +17,7 @@ import { postConnect } from '../utils';
 import { Cookies } from 'react-cookie';
 import { useCookies } from "react-cookie";
 import { UserContext } from '../contexts/user';
+import { useNavigate } from 'react-router-dom';
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -33,6 +34,7 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies();
   const { user, setUser } = React.useContext(UserContext);
   
@@ -50,6 +52,7 @@ export default function SignUp() {
     setCookie("auth_token", tokens.accesToken, {
       path: "/"
     });
+    navigate("/annonces");
   };
 
   return (

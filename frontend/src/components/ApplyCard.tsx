@@ -19,7 +19,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { getCompanyWithId, getUserData, patchOffersState } from '../utils';
+import { getCompanyWithId, getUserData, patchApply, patchOffersState } from '../utils';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -136,8 +136,8 @@ function CompanyApplyCard(props: any) {
       </CardContent>
       <CardActions disableSpacing>
         <div style={{marginLeft: 'auto'}}>
-            <Button color="error" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "HIDDEN"); window.location.reload()}}><ClearIcon/>
-            </Button><Button color="success" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "CLOSED"); window.location.reload()}}><DoneOutlineIcon/></Button></div>
+            <Button color="error" onClick={async (e) => {await patchApply(cookies.auth_token, props.annonceId, "REJECTED", "", props.applicationId); window.location.reload()}}><ClearIcon/>
+            </Button><Button color="success" onClick={async (e) => {await patchApply(cookies.auth_token, props.annonceId, "ACCEPTED", "", props.applicationId); window.location.reload()}}><DoneOutlineIcon/></Button></div>
         {/* <Button sx={{marginLeft: 'auto'}} variant="contained" endIcon={<SendIcon />} onClick=
           {(e) => navigate("/myannonces/" + props.annonceId)}> Gérer l'annonce
           </Button> */}

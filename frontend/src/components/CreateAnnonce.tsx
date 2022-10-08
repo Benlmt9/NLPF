@@ -57,16 +57,17 @@ function CreateAnnonce(){
             title: data.get('title'),
             description: data.get('description'),
             state: data.get('state'),
-            //ownerId: user.id,
+            // ownerId: user.id,
             city: data.get('city'),
             remote: data.get('remote'),
             date: datePickerValue,
-        });
+          });
         }
         else{setIsError(true)}
-        
         window.location.reload()
+        
       };
+      console.log("dqsfhshdishdilsdh",user);
 return (
     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3}}>
             <Grid container spacing={2}>
@@ -129,9 +130,9 @@ return (
                 label="Remote"
                 onChange={remoteSeclectHandleChange}
                 >
-                <MenuItem value={"YES"}>Oui</MenuItem>
+                <MenuItem value={"FULL"}>Oui</MenuItem>
                 <MenuItem value={"SEMI"}>Semie</MenuItem>
-                <MenuItem value={"No"}>Non</MenuItem>
+                <MenuItem value={"NO"}>Non</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

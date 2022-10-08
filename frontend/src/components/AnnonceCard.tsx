@@ -89,7 +89,7 @@ function AnnonceCard(props: any) {
     async function setOwnerInfoFromAPI() {
         const OwnerInfoFromApi = await getCompanyWithId(cookies.auth_token, props.ownerId);
         // const data = await AnnoncesFromApi.json();
-        console.log(OwnerInfoFromApi);
+        // console.log(OwnerInfoFromApi);
         setOwnerInfo(OwnerInfoFromApi);
     }
     setOwnerInfoFromAPI()
