@@ -71,6 +71,9 @@ export class OffersService {
   async apply(id: string, createApplicationDto: CreateApplicationDto) {
 
     // TODO : application model à créer avant, pour en recup l'id.
+
+    //TODO vite verif si ce user a déjà apply a l'annonce. et faire que le front affiche l'erreur en bien
+
     const applicationId = new Types.ObjectId();
 
 

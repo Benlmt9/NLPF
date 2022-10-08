@@ -1,32 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Headers, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Headers, BadRequestException, UseGuards, Req } from '@nestjs/common';
 import { OffersService } from './offers.service';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
 import { CreateApplicationDto, UpdateApplicationDto } from './dto/create-application.dto';
 import jwt_decode from "jwt-decode";
 import { isMongoId } from 'class-validator';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('offers')
 export class OffersController {
   constructor(private readonly offersService: OffersService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Headers('Authorization') authHeader, @Body() createOfferDto: CreateOfferDto) { 
+  create(@Req() req: Request, @Headers('Authorization') authHeader, @Body() createOfferDto: CreateOfferDto) { 
+    const userId = req.user["sub"];
     
-    if (authHeader){
+   /* if (authHeader){
       const accesToken = authHeader.replace('Bearer', '').trim();
       const jwtBody = jwt_decode(accesToken) as { sub: string}
-      const userId = jwtBody.sub;
+      const userId = jwtBody.sub;*/
 
-      if (!isMongoId(userId) && (!createOfferDto.ownerId)){
-        throw new BadRequestException("Provide an userId who own the offer (Bearer accestoken or request body");
+      if (!isMongoId(userId)){
+        throw new BadRequestException("Provide an userId who own the offer (Bearer accestoken)");
       }
 
     return this.offersService.create({...createOfferDto, ownerId : userId});
-
-    }
-
-    return this.offersService.create(createOfferDto);
   }
 
   @Get()
@@ -49,17 +49,20 @@ export class OffersController {
     return this.offersService.findAll({type: "CANDIDATE"});
   }
   
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOfferDto: UpdateOfferDto) {
-    return this.offersService.update(id, updateOfferDto);
+  @Patch(':offerId')
+  update(@Param('offerId') offerId: string, @Body() updateOfferDto: UpdateOfferDto) {
+    return this.offersService.update(offerId, updateOfferDto);
   }
   
 
+  // TODO ajouter auth guard
   @Post('/apply/:offerId/')
   apply(@Headers('Authorization') authHeader, @Param('offerId') offerId: string, @Body() createApplicationDto: CreateApplicationDto) {
 
 
-    if (authHeader){
+    if (!authHeader){
+     throw new BadRequestException("No token");
+    }
       const accesToken = authHeader.replace('Bearer', '').trim();
       const jwtBody = jwt_decode(accesToken) as { sub: string}
       const userId = jwtBody.sub;
@@ -68,17 +71,16 @@ export class OffersController {
         throw new BadRequestException("Provide an userId who own the offer (Bearer accestoken or request body");
       }
 
-    return this.offersService.apply(offerId, {...createApplicationDto, candidateId : userId});
 
-    }
+    const offerUpdate = this.offersService.apply(offerId, {...createApplicationDto, candidateId : userId});
 
-    const offerUpdate = this.offersService.apply(offerId, createApplicationDto);
-    
     // TODO Application model en créer un aussi! 
 
     return offerUpdate ;//&& applicationCreated;
   }
 
+
+  // TODO verif authguard si le userId c'est bien la company a qui appartient l'annonce
   @Patch('/apply/:offerId/')
   applyUpdate(@Param('offerId') offerId: string, @Body() updateApplicationDto: UpdateApplicationDto) { 
     //body contain : applicationId, state, reason? ;
