@@ -5,9 +5,10 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { OffersModule } from './offers/offers.module';
 import { AuthModule } from './auth/auth.module';
+import { QuizzModule } from './quizz/quizz.module';
 
 @Module({
-  imports: [UsersModule, OffersModule, MongooseModule.forRoot('mongodb://root:123123321@localhost:27017'), AuthModule], // + /nest ?
+  imports: [UsersModule, OffersModule, MongooseModule.forRoot('mongodb://root:123123321@localhost:27017'), AuthModule, QuizzModule], 
   controllers: [AppController],
   providers: [AppService],
 })
