@@ -14,16 +14,11 @@ export class OffersController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Req() req: Request, @Headers('Authorization') authHeader, @Body() createOfferDto: CreateOfferDto) { 
+  create(@Req() req: Request, @Body() createOfferDto: CreateOfferDto) { 
     const userId = req.user["sub"];
-    
-   /* if (authHeader){
-      const accesToken = authHeader.replace('Bearer', '').trim();
-      const jwtBody = jwt_decode(accesToken) as { sub: string}
-      const userId = jwtBody.sub;*/
 
       if (!isMongoId(userId)){
-        throw new BadRequestException("Provide an userId who own the offer (Bearer accestoken)");
+        throw new BadRequestException("Wrong acces token (does not contain an user id)");
       }
 
     return this.offersService.create({...createOfferDto, ownerId : userId});
@@ -39,8 +34,10 @@ export class OffersController {
     return this.offersService.findOne(id);
   }
 
-  @Get('/company/:companyId')
-  findAllCompany(@Param('companyId') companyId: string) {
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/company/')
+  findAllCompany(@Req() req: Request) {
+    const companyId = req.user["sub"];
     return this.offersService.findAll({type: "COMPANY", id : companyId});
   }
 
