@@ -20,9 +20,7 @@ export class AuthController {
         return this.authService.signinLocal(authSignInDto);
         
     }
-
-    //TODO checker a chaque fois si le user a toujours son tokenHash dans la table, sinon le acces token recu dans le Header vaut rien car
-    //cela signifie que le mec s'était logout, donc il doit regenerer un accestoken & refreshtoken en allant se Signin de nouveau 
+ 
     @UseGuards(AuthGuard('jwt'))
     @Post('logout')
     logout(@Req() req: Request) {

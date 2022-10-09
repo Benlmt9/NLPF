@@ -29,9 +29,9 @@ export class OffersController {
     return this.offersService.findAll();
   }
 
-  @Get('get/:id')
-  findOne(@Param('id') id: string) {
-    return this.offersService.findOne(id);
+  @Get('get/:offerId')
+  findOne(@Param('offerId') offerId: string) {
+    return this.offersService.findOne(offerId);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -76,15 +76,13 @@ export class OffersController {
     return offerUpdate ;//&& applicationCreated;
   }
 
-
-  // TODO verif authguard si le userId c'est bien la company a qui appartient l'annonce
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/apply/:offerId/')
-  applyUpdate(@Param('offerId') offerId: string, @Body() updateApplicationDto: UpdateApplicationDto) { 
-    //body contain : applicationId, state, reason? ;
-    const offerUpdate = this.offersService.applyUpdate(offerId, updateApplicationDto);
-    
-    // TODO Application model le update aussi (son state et reason!) 
+  applyUpdate(@Req() req: Request, @Param('offerId') offerId: string, @Body() updateApplicationDto: UpdateApplicationDto) { 
+    const companyId = req.user["sub"];
+    const offerUpdate = this.offersService.applyUpdate(offerId, companyId, updateApplicationDto);
 
+    // TODO Application model le update aussi (son state et reason!) 
     return offerUpdate ;//&& applicationCreated;
   }
 
