@@ -82,7 +82,7 @@ export default function AnnoncePage()
             <div>
                 <Stack spacing={1}>
                     <Grid container justifyContent="space-between" alignItems="center">
-                        <Grid item xs={2}>
+                        <Grid item xs={2} marginTop={1}>
                             <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">Remote</InputLabel>
                             <Select

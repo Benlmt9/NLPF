@@ -64,7 +64,7 @@ function CreateAnnonce(){
           });
         }
         else{setIsError(true)}
-        window.location.reload()
+        window.location.reload();
         
       };
       console.log("dqsfhshdishdilsdh",user);

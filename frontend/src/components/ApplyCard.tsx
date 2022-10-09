@@ -31,6 +31,7 @@ import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Iconify from './Iconify';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import Chip from '@mui/material/Chip';
 // import PercentageCircle from 'reactjs-percentage-circle';
 
 type Mentor = { activationDate: any }
@@ -82,18 +83,7 @@ function CompanyApplyCard(props: any) {
         <Iconify icon={'ant-design:apple-filled'} sx={24} height={24}/>
       </IconWrapperStyle>
         }
-        action={<><Pie percentage={85} colour="green" demension={50} center/>
-          {(props.state == "OPEN")? 
-            <>
-            <Button color="info" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "HIDDEN"); window.location.reload()}}><VisibilityIcon/>
-            </Button><Button color="error" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "CLOSED"); window.location.reload()}}><ClearIcon/></Button>
-            </> 
-          :(props.state == "HIDDEN") ?
-          <>
-          <Button color="info" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "OPEN"); window.location.reload()}}><VisibilityOffIcon/>
-          </Button><Button color="error" onClick={(e) => {patchOffersState(cookies.auth_token, props.annonceId, "CLOSED"); window.location.reload()}}><ClearIcon/></Button>
-          </>
-          :<></> }
+        action={<><Pie percentage={props.percent} colour="green" demension={50} center/>
         </>
         }
         title={OwnerInfo.name + " - " + OwnerInfo.email}
@@ -136,8 +126,10 @@ function CompanyApplyCard(props: any) {
       </CardContent>
       <CardActions disableSpacing>
         <div style={{marginLeft: 'auto'}}>
-            <Button color="error" onClick={async (e) => {await patchApply(cookies.auth_token, props.annonceId, "REJECTED", "", props.applicationId); window.location.reload()}}><ClearIcon/>
-            </Button><Button color="success" onClick={async (e) => {await patchApply(cookies.auth_token, props.annonceId, "ACCEPTED", "", props.applicationId); window.location.reload()}}><DoneOutlineIcon/></Button></div>
+          {(props.refused)?<Button color="error" disabled>Refusée<ClearIcon color="error"></ClearIcon></Button>:<>
+            <Button color="error" onClick={async (e) => {await patchApply(cookies.auth_token, props.annonceId, "REJECTED", "", props.applicationId, props.candidateId); window.location.reload()}}><ClearIcon/>
+            </Button><Button color="success" onClick={async (e) => {await patchApply(cookies.auth_token, props.annonceId, "ACCEPTED", "", props.applicationId, props.candidateId); window.location.reload()}}><DoneOutlineIcon/></Button>
+        </>}</div>
         {/* <Button sx={{marginLeft: 'auto'}} variant="contained" endIcon={<SendIcon />} onClick=
           {(e) => navigate("/myannonces/" + props.annonceId)}> Gérer l'annonce
           </Button> */}

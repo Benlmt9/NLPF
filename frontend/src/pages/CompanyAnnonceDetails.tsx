@@ -19,6 +19,7 @@ export default function CompanyAnnonceDetails()
     const [ClosedApplyList, setClosedApplyList] = React.useState([]);
     const [filteredApplyList, setFilteredApplyList] = React.useState([]);
     const [activeCloseFilter, setActiveCloseFilter] = React.useState(-1);
+    const [annonce, setAnnonce] = React.useState({})
     const { myAnnonceId } = useParams();
     const [valueTable, setValueTable] = React.useState("1");
 
@@ -29,6 +30,7 @@ export default function CompanyAnnonceDetails()
             setApplyList((AnnonceFromApi.applications == undefined)?[]:AnnonceFromApi.applications);
             setFilteredApplyList((AnnonceFromApi.applications == undefined)?[]:AnnonceFromApi.applications);
             setClosedApplyList((AnnonceFromApi.rejectedApplications == undefined)?[]:AnnonceFromApi.rejectedApplications);
+            setAnnonce(AnnonceFromApi);
         }
         setApplyListFromAPI()
     }, []
@@ -93,7 +95,7 @@ export default function CompanyAnnonceDetails()
                 <Stack spacing={1}>
                     <Grid container justifyContent="space-between" alignItems="center">
                         <Grid item>
-                            <h1>Toutes les annonces</h1>
+                            <h1>Candidature</h1>
                         </Grid>
                         <Grid item>
                             <FormControl variant="outlined">
@@ -115,13 +117,13 @@ export default function CompanyAnnonceDetails()
                     <TabContext value={valueTable}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleTableChange} aria-label="lab API tabs example">
-                            <Tab label="Toutes les annonces" value="1" />
-                            <Tab label="Ouverte" value="2" />
-                            <Tab label="Ouverte" value="3" />
+                            <Tab label="Toutes les candidatures" value="1" />
+                            <Tab label="En attente" value="2" />
+                            <Tab label="Refusée" value="3" />
                         </TabList>
                         </Box>
                         <TabPanel value="1">Vous avez un total de {filteredApplyList.length} {(filteredApplyList.length >1)?"candidatures": "candidature"}</TabPanel>
-                        <TabPanel value="2">Vous avez {filteredApplyList.length} {(filteredApplyList.length >1)?"candidatures ouvertes": "candidature ouverte"}</TabPanel>
+                        <TabPanel value="2">Vous avez {filteredApplyList.length} {(filteredApplyList.length >1)?"candidatures en attentes": "candidature en attente"}</TabPanel>
                         <TabPanel value="3">Vous avez {filteredApplyList.length} {(filteredApplyList.length >1)?"candidatures refusées": "candidature refusée"}</TabPanel>
                     </TabContext>
                     {filteredApplyList.length == 0 ?
@@ -136,7 +138,7 @@ export default function CompanyAnnonceDetails()
                             <Divider />
                                 {filteredApplyList.map((entry: any) => {console.log("annonce:" , entry)
                                     return (
-                                        <CompanyApplyCard title={entry.title} content={entry.message} key={entry._id} candidateId={entry.candidateId} annonceId={myAnnonceId} applicationId={entry.applicationId}/>
+                                        <CompanyApplyCard title={entry.title} content={entry.message} key={entry._id} candidateId={entry.candidateId} annonceId={myAnnonceId} applicationId={entry.applicationId} refused={isInClosed(entry.applicationId)} percent={20}/>
                                     )
                                 }
                                 )}

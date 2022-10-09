@@ -96,14 +96,14 @@ export async function postApply(token, id, body) {
     return await response.json();
 }
 
-export async function patchApply(token, id, state, reason, applicationId) {
+export async function patchApply(token, id, state, reason, applicationId, candidateId) {
     const response = await fetch(AppConfig.api_ip + "offers/apply/" + id, {
         method: "PATCH",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token,
         },
-        body: JSON.stringify({applicationId: applicationId, state: state, reason: reason})
+        body: JSON.stringify({applicationId: applicationId, state: state, reason: reason, choosenCandidate: candidateId})
     });
 
     return await response.json();

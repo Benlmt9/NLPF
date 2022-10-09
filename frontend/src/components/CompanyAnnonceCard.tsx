@@ -30,6 +30,10 @@ import AppWidgetSummary from './AppWidget';
 import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Iconify from './Iconify';
+import Badge from '@mui/material/Badge';
+import CommentIcon from '@mui/icons-material/Comment';
+import PercentIcon from '@mui/icons-material/Percent';
+import { Box } from '@mui/system';
 // import PercentageCircle from 'reactjs-percentage-circle';
 
 type Mentor = { activationDate: any }
@@ -133,14 +137,17 @@ function CompanyAnnonceCard(props: any) {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+          <CommentIcon/>
+          {props.comments}
         </IconButton>
         <IconButton aria-label="share">
-          <ShareIcon />
+          <PercentIcon/>
         </IconButton>
-        <Button sx={{marginLeft: 'auto'}} variant="contained" endIcon={<SendIcon />} onClick=
+        <Box sx={{marginLeft: 'auto'}}>
+        <Badge badgeContent={props.notifs} color="secondary" sx={{marginRight: 1}}>
+        <Button variant="contained" endIcon={<SendIcon />} onClick=
           {(e) => navigate("/myannonces/" + props.annonceId)}> Gérer l'annonce
-          </Button>
+          </Button></Badge></Box>
       </CardActions>
     </Card>
   );

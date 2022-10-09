@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, ButtonGroup, Divider, FormControl, Grid, InputAdornment, Stack, TextField, Typography, Modal } from '@mui/material';
+import { Box, Button, ButtonGroup, Divider, FormControl, Grid, InputAdornment, Stack, TextField, Typography, Modal, Card, CardContent } from '@mui/material';
 import AnnonceCard from '../components/AnnonceCard';
 import { getAnnonces, getAnnoncesOfCompany } from "../utils"
 import { useCookies } from "react-cookie";
@@ -12,6 +12,7 @@ import Tab from '@mui/material/Tab';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
+import Badge from '@mui/material/Badge';
 
 export default function CompanyAnnonce()
 {
@@ -21,6 +22,8 @@ export default function CompanyAnnonce()
     const [activeCloseFilter, setActiveCloseFilter] = React.useState(-1);
     const [isCreateAnnonceModalOpen, setIsCreateAnnonceModalOpen] = React.useState(false);
     const { user, setUser } = React.useContext(UserContext);
+    const [totalPost, setTotalPost] = React.useState(0);
+    const [averageScore, setAverageScore] = React.useState(0);
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -37,13 +40,24 @@ export default function CompanyAnnonce()
     React.useEffect(() => {
         async function setAnnoncesListFromAPI() {
             const AnnoncesFromApi = await getAnnoncesOfCompany(cookies.auth_token, user.id);
+            var tmptotalPost = 0;
+            var tmpaverageScore = 0;
             // const data = await AnnoncesFromApi.json();
             // console.log(AnnoncesFromApi);
             console.log("userid",user.id);
             setAnnoncesList(AnnoncesFromApi);
             setFilteredAnnonceList(AnnoncesFromApi);
+            for (let index = 0; index < AnnoncesFromApi.length; index++) {
+                tmptotalPost += (AnnoncesFromApi[index].applications != undefined)? AnnoncesFromApi[index].applications.length: 0;
+                for (let npapp = 0; npapp < AnnoncesFromApi[index].applications.length; npapp++) {
+                    tmpaverageScore += AnnoncesFromApi[index].applications[npapp].score / AnnoncesFromApi[index].applications.length / AnnoncesFromApi[index].length;
+                }
+            }
+            setTotalPost(tmptotalPost);
+            setAverageScore(tmpaverageScore);
         }
-        setAnnoncesListFromAPI()
+        setAnnoncesListFromAPI();
+        console.log("testestest", user);
         // console.log("annonce lisst :",AnnoncesList);
     }, []
     )
@@ -64,6 +78,10 @@ export default function CompanyAnnonce()
         setFilteredAnnonceList(AnnoncesList.filter((elt: any) => elt.state == "CLOSED"));
     }
   };
+
+  function nbNotif(entry : any){
+    return ((entry.applications != undefined)?entry.applications.length : 0) - ((entry.rejectedApplications != undefined)?entry.rejectedApplications.length : 0);
+  }
 
     function handleSearch(event: any) {
 
@@ -88,28 +106,22 @@ export default function CompanyAnnonce()
         }
     }
     return (
+        <Grid
+  container
+  direction="row"
+  justifyContent="center"
+  alignItems="center"
+>
+    <Grid item marginBottom='auto' ><Card><CardContent>{totalPost}</CardContent></Card></Grid>
+    <Grid item>
         <Box sx={{
             width: "800px",
-            margin: "auto",
         }}>
             <div>
                 <Stack spacing={1}>
                     <Grid container justifyContent="space-between" alignItems="center">
                         <Grid item>
-                            <h1>Toutes les annonces</h1>
-                        </Grid>
-                        <Grid item>
-                        <Button onClick={()=>setIsCreateAnnonceModalOpen(true)}>Créer une annonce</Button>
-                        <Modal
-                        open={isCreateAnnonceModalOpen}
-                        onClose={()=>setIsCreateAnnonceModalOpen(false)}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                        >
-                        <Box sx={style}>
-                            <CreateAnnonce></CreateAnnonce>
-                        </Box>
-                        </Modal>
+                            <h1>Mes annonces</h1>
                         </Grid>
                         <Grid item>
                             <FormControl variant="outlined">
@@ -126,6 +138,19 @@ export default function CompanyAnnonce()
                                     size="small"
                                 />
                             </FormControl>
+                        </Grid>
+                        <Grid item>
+                            <Button onClick={()=>setIsCreateAnnonceModalOpen(true)}>Créer une annonce</Button>
+                            <Modal
+                            open={isCreateAnnonceModalOpen}
+                            onClose={()=>setIsCreateAnnonceModalOpen(false)}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={style}>
+                                    <CreateAnnonce></CreateAnnonce>
+                                </Box>
+                            </Modal>
                         </Grid>
                     </Grid>
                     <TabContext value={value}>
@@ -154,7 +179,7 @@ export default function CompanyAnnonce()
                             <Divider />
                                 {filteredAnnonceList.map((entry: any) => {console.log("annonce:" , entry)
                                     return (
-                                        <CompanyAnnonceCard title={entry.title} description={entry.description} key={entry._id} ownerId={entry.ownerId} state={entry.state} annonceId={entry._id} canApply={true}/>
+                                        <CompanyAnnonceCard title={entry.title} comments={(entry.applications != undefined)? entry.applications.length:0} description={entry.description} key={entry._id} ownerId={entry.ownerId} state={entry.state} annonceId={entry._id} canApply={true} notifs={nbNotif(entry)}/>
                                     )
                                 }
                                 )}
@@ -163,6 +188,6 @@ export default function CompanyAnnonce()
                     }
                 </Stack>
             </div>
-        </Box>  
+        </Box></Grid></Grid>
     );
 }
