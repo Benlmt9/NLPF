@@ -42,7 +42,10 @@ export class QuizzService {
     return updated;
   }
 
-
+  async findAllById(companyId: string) {
+    return await this.quizzModel.find({ ownerId : companyId}).exec();
+  }
+  
   findAll() {
     return this.quizzModel.find();
   }

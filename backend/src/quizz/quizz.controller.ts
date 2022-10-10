@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, UseGuards, Req } from '@nestjs/common';
 import { QuizzService } from './quizz.service';
 import { CreateQuizzDto } from './dto/create-quizz.dto';
 import { CreateQuestionDto } from './dto/update-quizz.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('quizz')
 export class QuizzController {
@@ -20,6 +22,13 @@ export class QuizzController {
   @Get()
   findAll() {
     return this.quizzService.findAll();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('company/all')
+  async findAllCompany(@Req() req: Request) {
+    const companyId = req.user["sub"];
+    return await this.quizzService.findAllById(companyId);
   }
 
   @Get(':quizzId')
