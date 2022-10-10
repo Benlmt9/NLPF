@@ -69,10 +69,14 @@ export class AuthService {
         const passwordHash = await this.hashData(authDto.password);
 
         // TODO authDto => ajotuer les champs requis par mongo db du User schema (comme createuserdto)
-        // TODO check que le user exist pas déjà pour eviter une erreur mongo db qui stop le back..
-
+    
         const newUser = await new this.userModel({...authDto, passwordHash});
-        newUser.save();
+
+        try { 
+            await newUser.save();
+        } catch (error){
+            throw new ForbiddenException(`Can not save this user, MongoDb error code: ${error.code}` );
+        }
 
         const tokens = await this.getTokens(newUser._id, newUser.email);
         

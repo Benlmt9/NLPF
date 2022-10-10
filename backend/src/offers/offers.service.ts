@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types} from 'mongoose';
 import { Offer } from 'src/schemas/offers.schema';
@@ -67,15 +67,26 @@ export class OffersService {
     return offer;
   }
 
-
   async apply(id: string, createApplicationDto: CreateApplicationDto) {
 
     // TODO : application model à créer avant, pour en recup l'id.
 
-    //TODO vite verif si ce user a déjà apply a l'annonce. et faire que le front affiche l'erreur en bien
-
     const applicationId = new Types.ObjectId();
+    
+    const offer = await this.findOne(id);
 
+    //check if the user already applied to the offer
+    if (offer && offer.applications){
+      const res = Object.entries(offer.applications).forEach(
+        ([key, value]) => {
+          if (key === 'candidateId') {
+            if ((value as Array<String>).find(elt => elt === createApplicationDto.candidateId)) {
+              throw new ForbiddenException("User already applied to this offer");
+            }
+          }
+        }
+      );
+    }
 
     this.logger.log(`Try updating the offer with the id: ${id}...`);
 
@@ -89,14 +100,14 @@ export class OffersService {
       }
     };
 
-    const offer = await this.offerModel.updateOne(
+    const offerUpdated = await this.offerModel.updateOne(
       { _id: id }, updateParams
     );
 
-    if (!offer)
+    if (!offerUpdated)
       throw new BadRequestException("Offer does not exist");
 
-    return offer;
+    return offerUpdated;
   }
 
   async applyUpdate(offerId: string, companyId: string, updateApplicationDto: UpdateApplicationDto) {
