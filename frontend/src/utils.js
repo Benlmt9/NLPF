@@ -38,7 +38,7 @@ export async function getUserDataWithToken(token) {
 }
 
 export async function getAnnoncesOfCompany(token, id) {
-    const response = await fetch(AppConfig.api_ip + "offers/company/"+id,{
+    const response = await fetch(AppConfig.api_ip + "offers/company/",{
         method: "GET",
         headers: {
             'Content-Type': 'application/json',

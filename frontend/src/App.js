@@ -46,11 +46,11 @@ function App() {
           setUser(userFromAPI);
         }
     }
-    setUserContextFromAPI();
+    // setUserContextFromAPI();
     console.log("UwU",user);
 }, []
 )
-  getUserDataWithToken(cookies.auth_token);
+  // getUserDataWithToken(cookies.auth_token);
   return (
     <div>
       <UserContext.Provider value={{ user, setUser }}>
