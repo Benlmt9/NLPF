@@ -4,6 +4,7 @@ import { CreateQuizzDto } from './dto/create-quizz.dto';
 import { CreateQuestionDto } from './dto/update-quizz.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
+import { SubmitQuizzDto } from './dto/submit-quizz.dto';
 
 @Controller('quizz')
 export class QuizzController {
@@ -34,7 +35,14 @@ export class QuizzController {
   }
 
   @Get(':quizzId')
-  findOne(@Param('quizzId') quizzId: string) {
-    return this.quizzService.findOne(quizzId);
+  async findOne(@Param('quizzId') quizzId: string) {
+    return await this.quizzService.findOne(quizzId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('submit')
+  async submitQuizResponses(@Req() req: Request, @Body() submitQuizzDto: SubmitQuizzDto) {
+    const candidateId = req.user["sub"];
+    return this.quizzService.submitQuizz({...submitQuizzDto, candidateId});
   }
 }
