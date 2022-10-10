@@ -1,7 +1,7 @@
 import React from 'react'
-import { Box, Button, ButtonGroup, Divider, FormControl, Grid, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Card, CardContent, CardHeader, Divider, FormControl, Grid, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import AnnonceCard from '../components/AnnonceCard';
-import { getAnnonces, getAnnoncesOfCompany, getAnnonceWithId } from "../utils"
+import { getAnnonces, getAnnoncesOfCompany, getAnnonceWithId, getUserData } from "../utils"
 import { useCookies } from "react-cookie";
 import LockOutlined from '@mui/icons-material/LockOutlined';
 import CompanyAnnonceCard from '../components/CompanyAnnonceCard';
@@ -19,7 +19,8 @@ export default function CompanyAnnonceDetails()
     const [ClosedApplyList, setClosedApplyList] = React.useState([]);
     const [filteredApplyList, setFilteredApplyList] = React.useState([]);
     const [activeCloseFilter, setActiveCloseFilter] = React.useState(-1);
-    const [annonce, setAnnonce] = React.useState({})
+    const [annonce, setAnnonce] = React.useState({state: "", choosenCandidate: undefined})
+    const [ userAcceptedData, setUserAcceptedData] = React.useState({name: "", email:""})
     const { myAnnonceId } = useParams();
     const [valueTable, setValueTable] = React.useState("1");
 
@@ -31,6 +32,10 @@ export default function CompanyAnnonceDetails()
             setFilteredApplyList((AnnonceFromApi.applications == undefined)?[]:AnnonceFromApi.applications);
             setClosedApplyList((AnnonceFromApi.rejectedApplications == undefined)?[]:AnnonceFromApi.rejectedApplications);
             setAnnonce(AnnonceFromApi);
+            if (AnnonceFromApi.choosenCandidate !== undefined){
+                const tmpuserdata = await getUserData(cookies.auth_token, AnnonceFromApi.choosenCandidate);
+                setUserAcceptedData(tmpuserdata);
+            }
         }
         setApplyListFromAPI()
     }, []
@@ -86,6 +91,7 @@ export default function CompanyAnnonceDetails()
             setActiveCloseFilter(-1);
         }
     }
+    if (annonce.state !== "CLOSED"){
     return (
         <Box sx={{
             width: "800px",
@@ -148,5 +154,29 @@ export default function CompanyAnnonceDetails()
                 </Stack>
             </div>
         </Box>  
-    );
+    );}
+    else if (annonce.choosenCandidate != undefined){
+        return (<>
+        <Box sx={{
+            width: "800px",
+            margin: "auto",
+            alignItems: "center",
+        }}>
+            <div>
+                
+                <Stack spacing={1}><Card><CardContent><Typography >Vous avez choisi : </Typography>{userAcceptedData.name + " - " + userAcceptedData.email}</CardContent></Card></Stack>
+                <iframe src="https://giphy.com/embed/ZDEbidmaOPczlFqm06" width="960" height="540" frameBorder="0" allowFullScreen></iframe>
+            </div>
+        </Box>
+        </>)
+    }
+    else {
+        return (<Box sx={{
+            width: "800px",
+            margin: "auto",
+            alignItems: "center",
+        }}>
+            <Card><CardContent><Typography>Vous avez fermée cette annonce sans choisir de candidat </Typography></CardContent></Card>
+            <iframe src="https://giphy.com/embed/ZDEbidmaOPczlFqm06" width="960" height="540" frameBorder="0" allowFullScreen></iframe></Box>)
+    }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, ButtonGroup, Divider, FormControl, Grid, InputAdornment, Stack, TextField, Typography, Modal, Card, CardContent } from '@mui/material';
+import { Box, Button, ButtonGroup, Divider, FormControl, Grid, InputAdornment, Stack, TextField, Typography, Modal, Card, CardContent, CardHeader } from '@mui/material';
 import AnnonceCard from '../components/AnnonceCard';
 import { getAnnonces, getAnnoncesOfCompany } from "../utils"
 import { useCookies } from "react-cookie";
@@ -13,6 +13,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import Badge from '@mui/material/Badge';
+import Pie from "../components/Pie";
 
 export default function CompanyAnnonce()
 {
@@ -40,6 +41,7 @@ export default function CompanyAnnonce()
     React.useEffect(() => {
         async function setAnnoncesListFromAPI() {
             const AnnoncesFromApi = await getAnnoncesOfCompany(cookies.auth_token, user.id);
+            console.log("promise", AnnoncesFromApi);
             var tmptotalPost = 0;
             var tmpaverageScore = 0;
             // const data = await AnnoncesFromApi.json();
@@ -48,11 +50,16 @@ export default function CompanyAnnonce()
             setAnnoncesList(AnnoncesFromApi);
             setFilteredAnnonceList(AnnoncesFromApi);
             for (let index = 0; index < AnnoncesFromApi.length; index++) {
-                tmptotalPost += (AnnoncesFromApi[index].applications != undefined)? AnnoncesFromApi[index].applications.length: 0;
-                for (let npapp = 0; npapp < AnnoncesFromApi[index].applications.length; npapp++) {
-                    tmpaverageScore += AnnoncesFromApi[index].applications[npapp].score / AnnoncesFromApi[index].applications.length / AnnoncesFromApi[index].length;
+                if (AnnoncesFromApi[index].applications !== undefined){
+                    console.log("appli", AnnoncesFromApi[index].applications);
+                    tmptotalPost += (AnnoncesFromApi[index].applications !== undefined)? AnnoncesFromApi[index].applications.length: 0;
+                    for (let npapp = 0; npapp < AnnoncesFromApi[index].applications.length; npapp++) {
+                        if (AnnoncesFromApi[index].applications[npapp].score !== undefined){
+                        tmpaverageScore += AnnoncesFromApi[index].applications[npapp].score / AnnoncesFromApi[index].applications.length / AnnoncesFromApi[index].length;}
+                    }
                 }
             }
+            console.log("total", tmptotalPost);
             setTotalPost(tmptotalPost);
             setAverageScore(tmpaverageScore);
         }
@@ -109,14 +116,15 @@ export default function CompanyAnnonce()
         <Grid
   container
   direction="row"
-  justifyContent="center"
   alignItems="center"
+  justifyContent="center"
+  
 >
-    <Grid item marginBottom='auto' ><Card><CardContent>{totalPost}</CardContent></Card></Grid>
     <Grid item>
         <Box sx={{
             width: "800px",
-        }}>
+        }}
+        >
             <div>
                 <Stack spacing={1}>
                     <Grid container justifyContent="space-between" alignItems="center">
@@ -188,6 +196,9 @@ export default function CompanyAnnonce()
                     }
                 </Stack>
             </div>
-        </Box></Grid></Grid>
+        </Box></Grid>
+        <Grid item sx={{ position: 'fixed', bottom: "auto",  right: 40, top:100 }}><Grid><Card><CardHeader action={<Typography>Nombre de postulations sur vos annonces :</Typography>}></CardHeader><CardContent>{totalPost}</CardContent></Card></Grid>
+        <Grid marginTop={5}><Card><CardHeader action={<Typography >Score moyen sur vos quizzs</Typography>}></CardHeader><CardContent><Grid marginLeft={"auto"}><Pie percentage={averageScore} colour={(averageScore > 70)?"green":(averageScore > 40)? "orange": "red"} dimension={50}/></Grid></CardContent></Card></Grid></Grid>
+    </Grid>
     );
 }

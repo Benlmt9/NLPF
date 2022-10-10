@@ -131,7 +131,7 @@ return (
                 onChange={remoteSeclectHandleChange}
                 >
                 <MenuItem value={"FULL"}>Oui</MenuItem>
-                <MenuItem value={"SEMI"}>Semie</MenuItem>
+                <MenuItem value={"SEMI"}>Semi</MenuItem>
                 <MenuItem value={"NO"}>Non</MenuItem>
                 </Select>
               </FormControl>
