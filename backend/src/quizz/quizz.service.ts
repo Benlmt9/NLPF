@@ -64,7 +64,7 @@ export class QuizzService {
         
     const newQuestion = new this.questionModel({...createQuestionDto});
 
-    console.log(newQuestion);
+    await newQuestion.save();
 
     const updateParams = {
       $push: {
