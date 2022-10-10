@@ -9,9 +9,11 @@ import { Request } from 'express';
 export class QuizzController {
   constructor(private readonly quizzService: QuizzService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
-  async create(@Body() createQuizzDto: CreateQuizzDto) {
-    return this.quizzService.create(createQuizzDto);
+  async create(@Req() req: Request, @Body() createQuizzDto: CreateQuizzDto) {
+    const companyId = req.user["sub"];
+    return this.quizzService.create({...createQuizzDto, ownerId: companyId});
   }
 
   @Patch(':quizzId')
