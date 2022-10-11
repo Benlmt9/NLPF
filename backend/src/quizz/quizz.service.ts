@@ -91,7 +91,7 @@ export class QuizzService {
     //console.log("score: ", quizScore);
 
     //create quizResponse document and save it 
-    const createdQuizResponse = new this.quizResponseModel({...submitQuizzDto, score: scorePercent});//new this.quizzModel({...createQuizzDto});
+    const createdQuizResponse = new this.quizResponseModel({...submitQuizzDto, score: quizScore});//new this.quizzModel({...createQuizzDto});
     const res = await createdQuizResponse.save(); 
     
     //return 
