@@ -51,7 +51,7 @@ export class QuizzService {
     }
 
     const toPercent = score / questionsIds.length * 100;
-    return score;
+    return toPercent;
   }
 
   async create(createQuizzDto: CreateQuizzDto) {
@@ -87,8 +87,6 @@ export class QuizzService {
 
     //compute score
     const quizScore = await this.compute(submitQuizzDto.questionsIds, submitQuizzDto.answers);
-
-    const scorePercent = quizScore * 100;
 
     //console.log("score: ", quizScore);
 
