@@ -50,6 +50,7 @@ export class QuizzService {
       }
     }
 
+    const toPercent = score / questionsIds.length * 100;
     return score;
   }
 
@@ -87,10 +88,12 @@ export class QuizzService {
     //compute score
     const quizScore = await this.compute(submitQuizzDto.questionsIds, submitQuizzDto.answers);
 
-    console.log("score: ", quizScore);
+    const scorePercent = quizScore * 100;
+
+    //console.log("score: ", quizScore);
 
     //create quizResponse document and save it 
-    const createdQuizResponse = new this.quizResponseModel({...submitQuizzDto, score: quizScore});//new this.quizzModel({...createQuizzDto});
+    const createdQuizResponse = new this.quizResponseModel({...submitQuizzDto, score: scorePercent});//new this.quizzModel({...createQuizzDto});
     const res = await createdQuizResponse.save(); 
     
     //return 
