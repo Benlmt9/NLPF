@@ -6,24 +6,32 @@ import { Document } from 'mongoose';
 @Schema()
 export class User extends Document{
   @Prop({required: true,})
-  firstname: string;
+  name: string;
   
-  @Prop({required: true,})
-  lastname: string;
+  @Prop({nullable : true})
+  siret?: string;
   
   @Prop({
     required: true,
     index: true,
     unique: true
-})
+  })
   email : string;
 
   @Prop({required: true,})
   passwordHash: string;
 
+  @Prop({required: true})
+  type: string;
 
   @Prop({ nullable: true })
   tokenHash?: string;
+
+  @Prop({ nullable: true })
+  avatarUrl?: string;
+  
+  @Prop({ nullable: true })
+  cvUrl?: string;
 }
 
 

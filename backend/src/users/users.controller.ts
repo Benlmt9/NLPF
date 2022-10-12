@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Request } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -17,7 +19,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':email')
+  @Get('email/:email')
   findOneByMail(@Param('email') email: string) {
     return this.usersService.findOneByMail(email);
   }
@@ -25,6 +27,13 @@ export class UsersController {
   @Get('id/:id')
   findOneById(@Param('id') id: string) {
     return this.usersService.findOneById(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('get/current')
+  findCurrent(@Req() req: Request) {
+    const userId = req.user["sub"];
+    return this.usersService.findOneById(userId);
   }
 
   @Patch('id/:id')
@@ -37,3 +46,5 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 }
+
+
