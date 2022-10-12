@@ -79,7 +79,7 @@ export class OffersService {
     if (offer && offer.applications){
       const res = Object.entries(offer.applications).forEach(
         ([key, value]) => {
-          if (key === 'candidateId') {
+          if (key === 'candidateId' && value) {
             if ((value as Array<String>).find(elt => elt === createApplicationDto.candidateId)) {
               throw new ForbiddenException("User already applied to this offer");
             }
