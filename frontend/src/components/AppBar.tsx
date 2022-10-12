@@ -67,11 +67,12 @@ const MenuAppBar = (props: any) => {
 
   async function logout(e: any) {
     removeCookie("auth_token");
-    window.location.reload();
+    // window.location.reload();
+    navigate('/');
   }
 
   function displayMenuItem(item: any, i: any) {
-    if (item.admin === false || (item.admin === true && user.type === "COMPANY")) {
+    if (item.name == "Annonces" ||(item.admin === false && user.type == "CANDIDATE") || (item.admin === true && user.type === "COMPANY")) {
       return (<Button
         key={i}
         onClick={(e: any) => { handleCloseNavMenu(); navigate(item.route) }}
@@ -164,7 +165,7 @@ const MenuAppBar = (props: any) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" />
+                {(user.avatarUrl !== undefined)?<Avatar alt="Remy Sharp" src={user.avatarUrl}/>:<Avatar alt="Remy Sharp"/>}
               </IconButton>
             </Tooltip>
             <Menu

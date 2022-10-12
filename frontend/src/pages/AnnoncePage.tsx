@@ -8,6 +8,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import MenuAppBar from '../components/AppBar';
+import { UserContext } from '../contexts/user';
+
 export default function AnnoncePage()
 {
     const [cookies, setCookie, removeCookie] = useCookies();
@@ -17,6 +19,7 @@ export default function AnnoncePage()
     const [cityFilter, setCityFilter] = React.useState("");
     const [remoteFilter, setRemoteFilter] = React.useState("TOUT");
     const [search, setSearch] = React.useState("");
+    const { user, setUser } = React.useContext(UserContext);
 
     React.useEffect(() => {
         async function setAnnoncesListFromAPI() {
@@ -149,7 +152,7 @@ export default function AnnoncePage()
                             <Divider />
                                 {filteredAnnonceList.map((entry: any) => {
                                     return (
-                                        <AnnonceCard title={entry.title} description={entry.description} key={entry._id} ownerId={entry.ownerId} annonceId={entry._id} canApply={true} city={entry.city} remote={entry.remote}/>
+                                        <AnnonceCard title={entry.title} description={entry.description} key={entry._id} ownerId={entry.ownerId} annonceId={entry._id} canApply={user.type == "CANDIDATE"} city={entry.city} remote={entry.remote}/>
                                         )
                                     }
                                     )}

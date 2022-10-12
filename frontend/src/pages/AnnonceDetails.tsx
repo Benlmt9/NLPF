@@ -72,7 +72,8 @@ function DetailPage()
 
       async function HandlePost(){
         const tmpresult = await postQuizAnswers(cookies.auth_token ,{quizId: annonce.quizId, answers: quizAnswers, questionsIds: quizQuesionId});
-        await postApply(cookies.auth_token, annonceId, {message : message, candidateId: user.id, quizResponseId: tmpresult._id, score: tmpresult.score});
+        await postApply(cookies.auth_token, annonceId, {message : message, candidateId: user._id, quizResponseId: tmpresult._id, score: tmpresult.score});
+        navigate('/apply');
       }
     return (
         <div>

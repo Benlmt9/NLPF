@@ -9,8 +9,9 @@ const user = {
     email: "fd",
     name: "caca",
     type: "COMPANY",
-    avatar: 0,
+    avatarUrl: "",
     _id: "",
+    cvUrl:"",
 }
 
 export const UserContext = React.createContext({user, setUser: () => {}});

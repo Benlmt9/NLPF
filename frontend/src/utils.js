@@ -219,3 +219,16 @@ export async function getMyApply(token, id)
     });
     return myapply;
 }
+
+export async function patchUser(token, id, body)
+{
+    const response = await fetch(AppConfig.api_ip + "users/id/"+id,{
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        body : JSON.stringify(body)
+    })
+    return await response.json();
+}

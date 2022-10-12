@@ -68,27 +68,27 @@ console.log("props is accepted", props.isAccepted, props.annonceId);
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
-    <Card sx={{ minWidth: 300, minHeight: 400, maxHeight:400 }}>
+    <Card sx={{ minWidth: 300, maxWidth:300,minHeight: 400, maxHeight:400 }}>
       <CardHeader
-        avatar={
-          <IconWrapperStyle
-        sx={{
-          color: (theme : any ) => theme.palette['primary'].dark,
-          backgroundImage: (theme : any ) =>
-            `linear-gradient(135deg, ${alpha(theme.palette['primary'].dark, 0)} 0%, ${alpha(
-              theme.palette['primary'].dark,
-              0.24
-            )} 100%)`,
-        }}
-      >
-        <Iconify icon={'ant-design:apple-filled'} sx={24} height={24}/>
-      </IconWrapperStyle>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
+      //   avatar={
+      //     <IconWrapperStyle
+      //   sx={{
+      //     color: (theme : any ) => theme.palette['primary'].dark,
+      //     backgroundImage: (theme : any ) =>
+      //       `linear-gradient(135deg, ${alpha(theme.palette['primary'].dark, 0)} 0%, ${alpha(
+      //         theme.palette['primary'].dark,
+      //         0.24
+      //       )} 100%)`,
+      //   }}
+      // >
+      //   <Iconify icon={'ant-design:apple-filled'} sx={24} height={24}/>
+      // </IconWrapperStyle>
+      //   }
+        // action={
+        //   <IconButton aria-label="settings">
+        //     <MoreVertIcon />
+        //   </IconButton>
+        // }
         title={props.title + " - " + OwnerInfo.name}
         subheader={"September 14, 2016"}
         />
@@ -115,7 +115,7 @@ console.log("props is accepted", props.isAccepted, props.annonceId);
     </Card></Grid>
     <Grid item>
     
-    <Card sx={{ minWidth: 500, minHeight: 400, maxHeight:400 }}>
+    <Card sx={{ minWidth: 500, maxWidth: 500, minHeight: 400, maxHeight:400 }}>
       <CardHeader
       //   avatar={
       //     <IconWrapperStyle

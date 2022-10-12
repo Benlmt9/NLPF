@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useCookies } from "react-cookie";
 import SendIcon from '@mui/icons-material/Send';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { alpha, styled } from '@mui/material/styles';
 import CardHeader from '@mui/material/CardHeader';
@@ -41,7 +41,7 @@ type Mentor = { activationDate: any }
 function CompanyApplyCard(props: any) {
   const theme = useTheme();
   const [expanded, setExpanded] = React.useState(false);
-  const [OwnerInfo, setOwnerInfo] = React.useState({name : "", email:""});
+  const [OwnerInfo, setOwnerInfo] = React.useState({name : "", email:"", cvUrl : "https://iili.io//Z3Q4LP.png", avatarUrl:""});
   const [cookies, setCookie, removeCookie] = useCookies();
   const navigate = useNavigate();
   const IconWrapperStyle = styled('div')(({ theme }) => ({
@@ -81,20 +81,7 @@ function handleDownload(url :any, filename: any){
   return (
     <Card sx={{ minWidth: 300 }}>
       <CardHeader
-        avatar={
-          <IconWrapperStyle
-        sx={{
-          color: (theme : any ) => theme.palette['primary'].dark,
-          backgroundImage: (theme : any ) =>
-            `linear-gradient(135deg, ${alpha(theme.palette['primary'].dark, 0)} 0%, ${alpha(
-              theme.palette['primary'].dark,
-              0.24
-            )} 100%)`,
-        }}
-      >
-        <Iconify icon={'ant-design:apple-filled'} sx={24} height={24}/>
-      </IconWrapperStyle>
-        }
+        avatar={(OwnerInfo.avatarUrl !== undefined)?<Avatar alt="Remy Sharp" src={OwnerInfo.avatarUrl}/>:<Avatar alt="Remy Sharp"/>}
         action={<><Pie percentage={props.percent} colour={(props.percent > 70)?"green":(props.percent > 40)? "orange": "red"} demension={50} center/>
         </>
         }
@@ -137,7 +124,7 @@ function handleDownload(url :any, filename: any){
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Button onClick={() => handleDownload('https://arxiv.org/pdf/quant-ph/0410100.pdf', 'test-download.pdf')}>Télécharger le cv</Button>
+        {OwnerInfo.cvUrl !== undefined?<Button onClick={() => handleDownload(OwnerInfo.cvUrl, OwnerInfo.name + "CV.png")}>Télécharger le cv</Button>: <></>}
         <div style={{marginLeft: 'auto'}}>
           {(props.refused)?<Button color="error" disabled>Refusée<ClearIcon color="error"></ClearIcon></Button>:<>
             <Button color="error" onClick={async (e) => {await patchApply(cookies.auth_token, props.annonceId, "REJECTED", "", props.applicationId, props.candidateId); window.location.reload()}}><ClearIcon/>

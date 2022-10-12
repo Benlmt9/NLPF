@@ -115,11 +115,11 @@ function AnnonceCard(props: any) {
         <Iconify icon={'ant-design:apple-filled'} sx={24} height={24}/>
       </IconWrapperStyle>
         }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
+        // action={
+        //   <IconButton aria-label="settings">
+        //     <MoreVertIcon />
+        //   </IconButton>
+        // }
         title={props.title + " - " + OwnerInfo.name}
         subheader={"September 14, 2016"}
         />

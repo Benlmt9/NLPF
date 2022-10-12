@@ -54,7 +54,7 @@ function ContextRoutes() {
     <Route path='/signup' element={<SignUp></SignUp>} />
     <Route path='/companySignup' element={<CompanySignUp></CompanySignUp>} />
     <Route path='/type' element={<ChooseYourType></ChooseYourType>} />
-    <Route path="/*"element={<SignIn></SignIn>}/>
+    <Route path="/*"element={<></>}/>
     </Routes>
     </Router>
     </div>
