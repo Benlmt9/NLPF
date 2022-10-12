@@ -25,7 +25,6 @@ export class UsersService {
 
     this.logger.log(`Check DTO:`, createUserDto);
 
-    // TODO : really hash the password and manage token with passport js 
     const createdUser = new this.userModel({...createUserDto, passwordHash : `${createUserDto.password}hashed`});
 
     return createdUser.save();
@@ -71,7 +70,6 @@ export class UsersService {
     if (!Types.ObjectId.isValid(id))
         throw new BadRequestException("Bad id");
         
-    //const user = await this.userModel.findByIdAndUpdate(id, updateUserDto).exec();
     const user = await this.userModel.updateOne({_id : id}, updateUserDto);
       
       if (!user)

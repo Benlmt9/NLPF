@@ -68,8 +68,6 @@ export class AuthService {
 
         const passwordHash = await this.hashData(authDto.password);
 
-        // TODO authDto => ajotuer les champs requis par mongo db du User schema (comme createuserdto)
-    
         const newUser = await new this.userModel({...authDto, passwordHash});
 
         try { 
@@ -120,7 +118,7 @@ export class AuthService {
     }
 
     refreshTokens() {
-        
+        //TODO
     }
 
 }
