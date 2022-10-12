@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import { postAnnonce } from '../utils';
+import { getQuizz, postAnnonce } from '../utils';
 import { useCookies } from "react-cookie";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -27,6 +27,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Stack from '@mui/material/Stack';
+import { map } from 'lodash';
 
 const locales = ['en', 'fr', 'de', 'ru', 'ar-sa'] as const;
 
@@ -39,8 +40,23 @@ function CreateAnnonce(){
     const [cookies, setCookie, removeCookie] = useCookies();
     const [state, setState] = React.useState("");
     const [remote, setRemote] = React.useState("");
+    const [quizIdSelect, setQuizIdSelect] = React.useState("");
     const { user, setUser } = React.useContext(UserContext);
     const [startDate, setStartDate] = React.useState(new Date());
+    const [quizzList, setQuizzList] = React.useState([]);
+
+    React.useEffect(() => {
+      async function initQuizzList() {
+          const quizzListFromAPI = await getQuizz(cookies.auth_token);
+          // const data = await AnnoncesFromApi.json();
+          // console.log(OwnerInfoFromApi);
+          setQuizzList(quizzListFromAPI);
+      }
+      initQuizzList();
+      // console.log("annonce lisst :",AnnoncesList);
+  }, []
+  )
+
     const stateSeclectHandleChange = (event: SelectChangeEvent) => {
         setState(event.target.value as string);
       };
@@ -48,6 +64,11 @@ function CreateAnnonce(){
     const remoteSeclectHandleChange = (event: SelectChangeEvent) => {
         setRemote(event.target.value as string);
       };
+
+    const quizzSeclectHandleChange = (event: SelectChangeEvent) => {
+      setQuizIdSelect(event.target.value as string);
+    };
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -60,6 +81,7 @@ function CreateAnnonce(){
             // ownerId: user.id,
             city: data.get('city'),
             remote: data.get('remote'),
+            quizId: data.get('quizzId'),
             date: datePickerValue,
           });
         }
@@ -133,6 +155,26 @@ return (
                 <MenuItem value={"FULL"}>Oui</MenuItem>
                 <MenuItem value={"SEMI"}>Semi</MenuItem>
                 <MenuItem value={"NO"}>Non</MenuItem>
+                </Select>
+              </FormControl></Grid>
+              <Grid item xs={12}>
+              <FormControl fullWidth>
+              <InputLabel id="demo-simplel">Quizz</InputLabel>
+                <Select
+                required
+                labelId="demo-simple"
+                id="quizzId"
+                name="quizzId"
+                value={quizIdSelect}
+                label="Lier un quizz"
+                onChange={quizzSeclectHandleChange}
+                >
+                  {quizzList.map((entry: any) => {console.log("quizz:" , entry)
+                                    return (
+                                        <MenuItem value={entry._id}>{entry.name}</MenuItem>
+                                    )
+                                }
+                                )}
                 </Select>
               </FormControl>
             </Grid>

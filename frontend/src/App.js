@@ -14,6 +14,7 @@ import { getUserDataWithToken } from './utils';
 import { UserContext } from './contexts/user';
 import { AppBar } from '@mui/material';
 import MenuAppBar from './components/AppBar';
+import ContextRoutes from './ContextRoutes'
 
 
 const tmpuser = {
@@ -39,6 +40,7 @@ function App() {
         console.log("fromAPI", userFromAPI);
         if (userFromAPI.statusCode == 400)
         {
+          console.log("fcddghskgu");
           setUser(tmpuser);
         }
         else{
@@ -46,6 +48,7 @@ function App() {
           setUser(userFromAPI);
         }
     }
+    setUserContextFromAPI();
     // setUserContextFromAPI();
     console.log("UwU",user);
 }, []
@@ -54,8 +57,7 @@ function App() {
   return (
     <div>
       <UserContext.Provider value={{ user, setUser }}>
-      <Router>
-      {/* <MenuAppBar></MenuAppBar> */}
+      {/* <Router>
         <Routes>
           <Route path='/signIn' element={<SignIn></SignIn>} />
           <Route path='/' element={<SignIn></SignIn>} />
@@ -67,7 +69,8 @@ function App() {
           <Route path='/myannonces/:myAnnonceId' element={<CompanyAnnonceDetails></CompanyAnnonceDetails>} />
           <Route path='/annonces/:annonceId' element={<DetailPage></DetailPage>} />
         </Routes>
-      </Router>
+      </Router> */}
+      <ContextRoutes></ContextRoutes>
       </UserContext.Provider>
     </div>
   );

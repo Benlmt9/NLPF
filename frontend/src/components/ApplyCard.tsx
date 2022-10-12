@@ -33,6 +33,9 @@ import Iconify from './Iconify';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import Chip from '@mui/material/Chip';
 // import PercentageCircle from 'reactjs-percentage-circle';
+import axios from 'axios'
+import fileDownload from 'js-file-download'
+
 
 type Mentor = { activationDate: any }
 function CompanyApplyCard(props: any) {
@@ -66,6 +69,15 @@ function CompanyApplyCard(props: any) {
 }, []
 )
 
+function handleDownload(url :any, filename: any){
+  axios.get(url, {
+    responseType: 'blob',
+  })
+  .then((res) => {
+    fileDownload(res.data, filename)
+  })
+};
+
   return (
     <Card sx={{ minWidth: 300 }}>
       <CardHeader
@@ -83,7 +95,7 @@ function CompanyApplyCard(props: any) {
         <Iconify icon={'ant-design:apple-filled'} sx={24} height={24}/>
       </IconWrapperStyle>
         }
-        action={<><Pie percentage={props.percent} colour="green" demension={50} center/>
+        action={<><Pie percentage={props.percent} colour={(props.percent > 70)?"green":(props.percent > 40)? "orange": "red"} demension={50} center/>
         </>
         }
         title={OwnerInfo.name + " - " + OwnerInfo.email}
@@ -125,6 +137,7 @@ function CompanyApplyCard(props: any) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
+        <Button onClick={() => handleDownload('https://arxiv.org/pdf/quant-ph/0410100.pdf', 'test-download.pdf')}>Télécharger le cv</Button>
         <div style={{marginLeft: 'auto'}}>
           {(props.refused)?<Button color="error" disabled>Refusée<ClearIcon color="error"></ClearIcon></Button>:<>
             <Button color="error" onClick={async (e) => {await patchApply(cookies.auth_token, props.annonceId, "REJECTED", "", props.applicationId, props.candidateId); window.location.reload()}}><ClearIcon/>

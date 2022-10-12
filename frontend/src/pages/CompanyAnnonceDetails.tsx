@@ -144,7 +144,7 @@ export default function CompanyAnnonceDetails()
                             <Divider />
                                 {filteredApplyList.map((entry: any) => {console.log("annonce:" , entry)
                                     return (
-                                        <CompanyApplyCard title={entry.title} content={entry.message} key={entry._id} candidateId={entry.candidateId} annonceId={myAnnonceId} applicationId={entry.applicationId} refused={isInClosed(entry.applicationId)} percent={20}/>
+                                        <CompanyApplyCard title={entry.title} content={entry.message} key={entry._id} candidateId={entry.candidateId} annonceId={myAnnonceId} applicationId={entry.applicationId} refused={isInClosed(entry.applicationId)} percent={(entry.score !== undefined)?entry.score:15}/>
                                     )
                                 }
                                 )}

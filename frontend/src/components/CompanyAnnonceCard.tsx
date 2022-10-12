@@ -144,7 +144,7 @@ function CompanyAnnonceCard(props: any) {
           <PercentIcon/>
         </IconButton>
         <Box sx={{marginLeft: 'auto'}}>
-        <Badge badgeContent={props.notifs} color="secondary" sx={{marginRight: 1}}>
+        <Badge badgeContent={(props.state != "CLOSED")?props.notifs: 0} color="secondary" sx={{marginRight: 1}}>
         <Button variant="contained" endIcon={<SendIcon />} onClick=
           {(e) => navigate("/myannonces/" + props.annonceId)}> Gérer l'annonce
           </Button></Badge></Box>

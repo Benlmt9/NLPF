@@ -25,51 +25,18 @@ import { alpha } from '@mui/material/styles';
 import Iconify from './Iconify';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LaptopChromebookIcon from '@mui/icons-material/LaptopChromebook';
+import { UserContext } from '../contexts/user';
+import Pie from "./Pie";
+import { Grid } from '@mui/material';
 import MouseIcon from '@mui/icons-material/Mouse';
-// function AnnonceCard(props: any) {
 
-//     return (
-//         <Card sx={{ minWidth: 150, backgroundImage: "url(https://imgs.search.brave.com/mRqotRnngvez9A8ySJ_haMVM8DeOx3ntd5EQSPuBMZI/rs:fit:1200:680:1/g:ce/aHR0cHM6Ly9jZG4t/c3RhdGljLmZpbmRs/eS5jb20vd3AtY29u/dGVudC91cGxvYWRz/L3NpdGVzLzc5NC8y/MDE5LzAzL2Nhbi1j/b3JwLWhlYWRlcmlt/YWdlLmpwZw)", backgroundSize: "cover", backgroundPosition: "center" }} color="text.secondary" key={props.key}>
-//           {/* <CardMedia
-//             component="img"
-//             height="140"
-//             src=""
-//             alt="green iguana"
-//           /> */}
-//           <CardContent>
-//             <Typography gutterBottom variant="h5" component="div">
-//               {props.title}
-//             </Typography>
-//             <Typography variant="body2" color="text.secondary">
-//               {props.description}
-//             </Typography>
-//           </CardContent>
-//           <CardActions>
-//             <Button size="small">Learn More</Button>
-//           </CardActions>
-//         </Card>
-//       );
-
-// }
-
-
-
-// const ExpandMore = styled((props) => {
-//   const { expand, ...other } = props;
-//   return <IconButton {...other} />;
-// })(({ theme, expand }) => ({
-//   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-//   marginLeft: 'auto',
-//   transition: theme.transitions.create('transform', {
-//     duration: theme.transitions.duration.shortest,
-//   }),
-// }));
 type Mentor = { activationDate: any }
-function AnnonceCard(props: any) {
+function ApplyAnnonceCard(props: any) {
   const [expanded, setExpanded] = React.useState(false);
   const [OwnerInfo, setOwnerInfo] = React.useState({name : ""});
   const [cookies, setCookie, removeCookie] = useCookies();
   const navigate = useNavigate();
+  const { user, setUser } = React.useContext(UserContext);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -97,9 +64,11 @@ function AnnonceCard(props: any) {
     // console.log("annonce lisst :",AnnoncesList);
 }, []
 )
-
+console.log("props is accepted", props.isAccepted, props.annonceId);
   return (
-    <Card sx={{ minWidth: 300 }}>
+    <Grid container justifyContent="space-between" alignItems="center">
+      <Grid item>
+    <Card sx={{ minWidth: 300, minHeight: 400, maxHeight:400 }}>
       <CardHeader
         avatar={
           <IconWrapperStyle
@@ -143,8 +112,51 @@ function AnnonceCard(props: any) {
           </Button>: <></>
         }
       </CardActions>
+    </Card></Grid>
+    <Grid item>
+    
+    <Card sx={{ minWidth: 500, minHeight: 400, maxHeight:400 }}>
+      <CardHeader
+      //   avatar={
+      //     <IconWrapperStyle
+      //   sx={{
+      //     color: (theme : any ) => theme.palette['primary'].dark,
+      //     backgroundImage: (theme : any ) =>
+      //       `linear-gradient(135deg, ${alpha(theme.palette['primary'].dark, 0)} 0%, ${alpha(
+      //         theme.palette['primary'].dark,
+      //         0.24
+      //       )} 100%)`,
+      //   }}
+      // >
+      //   <Iconify icon={'ant-design:apple-filled'} sx={24} height={24}/>
+      // </IconWrapperStyle>
+      //   }
+        action={
+          (props.score != undefined)?<Pie percentage={props.score} colour={(props.score > 70)?"green":(props.score > 40)? "orange": "red"} demension={50} center/>:<></>
+        }
+        title={"Status :" + ((props.isAccepted)? " Accepté": (props.isRefused)? " Refusé": " En cours") }
+        subheader={user.name + " - "+user.email}
+        />
+      {/* <CardMedia sx={{ minWidth: 300, backgroundImage: "url(https://imgs.search.brave.com/mRqotRnngvez9A8ySJ_haMVM8DeOx3ntd5EQSPuBMZI/rs:fit:1200:680:1/g:ce/aHR0cHM6Ly9jZG4t/c3RhdGljLmZpbmRs/eS5jb20vd3AtY29u/dGVudC91cGxvYWRz/L3NpdGVzLzc5NC8y/MDE5LzAzL2Nhbi1j/b3JwLWhlYWRlcmlt/YWdlLmpwZw)", backgroundSize: "cover", backgroundPosition: "center" }} color="text.secondary"
+        component="img"
+        height="194"  
+        /> */}
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {props.message}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        {
+          props.canApply ? <Button sx={{marginLeft: 'auto'}} variant="contained" endIcon={<SendIcon />} onClick=
+          {(e) => navigate("/annonces/" + props.annonceId)}> Postuler
+          </Button>: <></>
+        }
+      </CardActions>
     </Card>
+    </Grid>
+    </Grid>
   );
 }
 
-export default AnnonceCard
+export default ApplyAnnonceCard

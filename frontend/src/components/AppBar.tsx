@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { positions } from '@mui/system';
 
 import { UserContext } from '../contexts/user';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { makeStyles } from "@mui/styles";
 
@@ -34,13 +34,13 @@ const useStyles = makeStyles((theme: any) => ({
 
 const menuItems = [
   { name: 'Annonces', route: '/annonces/', admin: false },
-  { name: 'Mes Candidatures', route: '/', admin: false },
-  { name: 'Mes offres', route: '/', admin: true },
-  { name: 'Mes Quizz', route: '/', admin: true },
+  { name: 'Mes Candidatures', route: '/apply', admin: false },
+  { name: 'Mes anonnces', route: '/myannonces', admin: true },
+  { name: 'Mes Quizz', route: '/myquizz', admin: true },
 ];
 
 const menu = ['Mes Missions', 'Mes Missions']
-const settings = ['Logout'];
+const settings = ['Logout', 'Mon profil'];
 
 const MenuAppBar = (props: any) => {
   const classes = useStyles();
@@ -49,7 +49,6 @@ const MenuAppBar = (props: any) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const { user, setUser } = React.useContext(UserContext);
   const [cookies, setCookie, removeCookie] = useCookies();
-
 
   const handleOpenNavMenu = (event: any) => {
     setAnchorElNav(event.currentTarget);
@@ -165,7 +164,7 @@ const MenuAppBar = (props: any) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={Blg} />
+                <Avatar alt="Remy Sharp" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -184,11 +183,13 @@ const MenuAppBar = (props: any) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={logout}>{setting}</Typography>
+
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={logout}>logout</Typography>
                 </MenuItem>
-              ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={()=>navigate("/profil")}>Mon profil</Typography>
+                </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

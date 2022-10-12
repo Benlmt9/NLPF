@@ -33,7 +33,7 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignIn() {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies();
   const { user, setUser } = React.useContext(UserContext);
@@ -53,6 +53,7 @@ export default function SignUp() {
       path: "/"
     });
     navigate("/annonces");
+    window.location.reload();
   };
 
   return (

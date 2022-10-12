@@ -10,6 +10,7 @@ const user = {
     name: "caca",
     type: "COMPANY",
     avatar: 0,
+    _id: "",
 }
 
 export const UserContext = React.createContext({user, setUser: () => {}});
