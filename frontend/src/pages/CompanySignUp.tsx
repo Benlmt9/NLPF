@@ -45,7 +45,7 @@ export default function CompanySignUp() {
         type: "COMPANY"
       });}
       else{setIsError(true)}
-    navigate("/annonces/")
+      window.location.reload();
   };
 
   return (

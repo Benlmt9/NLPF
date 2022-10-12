@@ -67,7 +67,7 @@ import MouseIcon from '@mui/icons-material/Mouse';
 type Mentor = { activationDate: any }
 function AnnonceCard(props: any) {
   const [expanded, setExpanded] = React.useState(false);
-  const [OwnerInfo, setOwnerInfo] = React.useState({name : ""});
+  const [OwnerInfo, setOwnerInfo] = React.useState({name : "", avatarUrl:""});
   const [cookies, setCookie, removeCookie] = useCookies();
   const navigate = useNavigate();
 
@@ -101,20 +101,7 @@ function AnnonceCard(props: any) {
   return (
     <Card sx={{ minWidth: 300 }}>
       <CardHeader
-        avatar={
-          <IconWrapperStyle
-        sx={{
-          color: (theme : any ) => theme.palette['primary'].dark,
-          backgroundImage: (theme : any ) =>
-            `linear-gradient(135deg, ${alpha(theme.palette['primary'].dark, 0)} 0%, ${alpha(
-              theme.palette['primary'].dark,
-              0.24
-            )} 100%)`,
-        }}
-      >
-        <Iconify icon={'ant-design:apple-filled'} sx={24} height={24}/>
-      </IconWrapperStyle>
-        }
+        avatar={(OwnerInfo.avatarUrl !== undefined)?<Avatar alt="Remy Sharp" src={OwnerInfo.avatarUrl}/>:<Avatar alt="Remy Sharp"/>}
         // action={
         //   <IconButton aria-label="settings">
         //     <MoreVertIcon />

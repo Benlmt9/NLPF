@@ -47,7 +47,6 @@ export default function ChooseYourType() {
 
   return (
                 <Box sx={{ width: '100%' }}>
-                      <MenuAppBar/>
       <Grid container justifyContent="space-around">
         <div>
         <Grid item xs={6} justifyContent="center">

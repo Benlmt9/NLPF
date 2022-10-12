@@ -102,6 +102,15 @@ function DetailPage()
                 <CardContent>
                 {(Quiz.questions !== undefined && Quiz.questions[isAtQuestion -1]!== undefined && Quiz.questions[isAtQuestion -1].answers !== undefined)?<><FormControl>
                     <FormLabel id="demo-radio-buttons-group-label">{Quiz.questions[isAtQuestion -1].label}</FormLabel>
+                    {(Quiz.questions[isAtQuestion -1].answers.length === 0)?  <TextField
+                  required
+                  fullWidth
+                  id="réponse"
+                  label="Ma réponse"
+                  name="réponse"
+                  value={debugForm}
+                  onChange={handleChangeForm}
+                />: 
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         name="radio-buttons-group"
@@ -115,7 +124,7 @@ function DetailPage()
                                     )
                                 }
                                 )}
-                    </RadioGroup>
+                    </RadioGroup>}
                 </FormControl></>: <></>}
                 </CardContent>
                 <CardActions disableSpacing>

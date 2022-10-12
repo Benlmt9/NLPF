@@ -52,8 +52,8 @@ export default function SignIn() {
     setCookie("auth_token", tokens.accesToken, {
       path: "/"
     });
-    navigate("/annonces");
-    window.location.reload();
+    navigate('/annonces');
+
   };
 
   return (

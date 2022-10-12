@@ -68,7 +68,7 @@ function ContextRoutes() {
       {/* <MenuAppBar></MenuAppBar> */}
         <Routes>
           <Route path='/signIn' element={<SignIn></SignIn>} />
-          <Route path='/' element={<SignIn></SignIn>} />
+          <Route path='/' element={<AnnoncePage></AnnoncePage>} />
           <Route path='/type' element={<ChooseYourType></ChooseYourType>} />
           <Route path='/signup' element={<SignUp></SignUp>} />
           <Route path='/companySignup' element={<CompanySignUp></CompanySignUp>} />
@@ -93,7 +93,7 @@ function ContextRoutes() {
       {/* <MenuAppBar></MenuAppBar> */}
         <Routes>
           <Route path='/signIn' element={<SignIn></SignIn>} />
-          <Route path='/' element={<SignIn></SignIn>} />
+          <Route path='/' element={<AnnoncePage></AnnoncePage>} />
           <Route path='/type' element={<ChooseYourType></ChooseYourType>} />
           <Route path='/signup' element={<SignUp></SignUp>} />
           <Route path='/companySignup' element={<CompanySignUp></CompanySignUp>} />

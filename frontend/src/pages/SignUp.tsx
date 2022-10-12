@@ -45,7 +45,8 @@ export default function SignUp() {
         type: "CANDIDATE"
       });}
       else{setIsError(true)}
-    navigate("/annonces/")
+      navigate('/annonces');
+
   };
 
   return (
