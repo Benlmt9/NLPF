@@ -44,7 +44,7 @@ export default function CompanyAnnonce()
             console.log("promise", AnnoncesFromApi);
             var tmptotalPost = 0;
             var tmpaverageScore = 0;
-            var divise = 100000;
+            var divise = 0;
             // const data = await AnnoncesFromApi.json();
             // console.log(AnnoncesFromApi);
             console.log("userid",user.id);
@@ -56,12 +56,12 @@ export default function CompanyAnnonce()
                     tmptotalPost += (AnnoncesFromApi[index].applications !== undefined)? AnnoncesFromApi[index].applications.length: 0;
                     for (let npapp = 0; npapp < AnnoncesFromApi[index].applications.length; npapp++) {
                         if (AnnoncesFromApi[index].applications[npapp].score !== undefined){
-                        tmpaverageScore += AnnoncesFromApi[index].applications[npapp].score;
+                        tmpaverageScore += +AnnoncesFromApi[index].applications[npapp].score;
                         divise += 1;}
                     }
                 }
             }
-            console.log("total", tmptotalPost);
+            console.log("totAIEHFEIFHEIFHEIFEHIFEIFEHEIFEHFIal", tmpaverageScore);
             setTotalPost(tmptotalPost);
             const avera = tmpaverageScore / divise;
             setAverageScore(avera);

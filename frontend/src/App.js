@@ -17,21 +17,11 @@ import MenuAppBar from './components/AppBar';
 import ContextRoutes from './ContextRoutes'
 
 
-const tmpuser = {
-  // Thibault id
-  //id: "633cca004f78b0015281f6e5",
 
-  // Apple 2 Id
-  id: "633f863dcd2973914f9a44c4",
-  email: "fd",
-  name: "piiipi",
-  type: "COMPANY",
-  avatar: 0,
-};
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies();
-  const [user, setUser] = React.useState(tmpuser);
+  const [user, setUser] = React.useState({});
   const valueUser = { user, setUser };
 
   React.useEffect(() => {
@@ -40,8 +30,7 @@ function App() {
         console.log("fromAPI", userFromAPI);
         if (userFromAPI.statusCode == 400)
         {
-          console.log("fcddghskgu");
-          setUser(tmpuser);
+          setUser({});
         }
         else{
           console.log("ici",userFromAPI);
