@@ -52,7 +52,6 @@ export class OffersController {
   }
   
 
-  // TODO ajouter auth guard
   @Post('/apply/:offerId/')
   apply(@Headers('Authorization') authHeader, @Param('offerId') offerId: string, @Body() createApplicationDto: CreateApplicationDto) {
 
@@ -71,9 +70,9 @@ export class OffersController {
 
     const offerUpdate = this.offersService.apply(offerId, {...createApplicationDto, candidateId : userId});
 
-    // TODO Application model en créer un aussi! 
+     
 
-    return offerUpdate ;//&& applicationCreated;
+    return offerUpdate ;
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -82,8 +81,7 @@ export class OffersController {
     const companyId = req.user["sub"];
     const offerUpdate = this.offersService.applyUpdate(offerId, companyId, updateApplicationDto);
 
-    // TODO Application model le update aussi (son state et reason!) 
-    return offerUpdate ;//&& applicationCreated;
+    return offerUpdate ;
   }
 
 

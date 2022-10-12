@@ -69,7 +69,6 @@ export class OffersService {
 
   async apply(id: string, createApplicationDto: CreateApplicationDto) {
 
-    // TODO : application model à créer avant, pour en recup l'id.
 
     const applicationId = new Types.ObjectId();
     
@@ -111,7 +110,6 @@ export class OffersService {
   }
 
   async applyUpdate(offerId: string, companyId: string, updateApplicationDto: UpdateApplicationDto) {
-    //TODO : verif que l'annonce est pas CLOSED sinon pas possible d'applyUpddate
 
     this.logger.log(`Try updating state of an application related to the offer with the id: ${offerId}...`);
     if (!Types.ObjectId.isValid(offerId))
