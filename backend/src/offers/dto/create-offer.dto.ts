@@ -12,11 +12,9 @@ const offersRemoteValueArray = Object.values(REMOTE_STATE);
 
 export class CreateOfferDto {
     @IsNotEmpty()
-    @IsAscii()
     title: string;
 
     @IsNotEmpty()
-    @IsAscii()
     description: string;
 
     @IsOptional()

@@ -5,7 +5,6 @@ const userTypeValueArray = Object.values(USER_TYPE)
 
 export class CreateUserDto {
     @IsNotEmpty()
-    @IsAscii()
     name: string;
 
     siret: string;
