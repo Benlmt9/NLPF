@@ -24,7 +24,4 @@ export class CreateUserDto {
     @IsEmpty()
     tokenHash : string;
 
-    @IsOptional()
-    @IsNumberString()
-    avatarId: string;
 }

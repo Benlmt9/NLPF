@@ -28,7 +28,10 @@ export class User extends Document{
   tokenHash?: string;
 
   @Prop({ nullable: true })
-  avatarId?: string;
+  avatarUrl?: string;
+  
+  @Prop({ nullable: true })
+  cvUrl?: string;
 }
 
 

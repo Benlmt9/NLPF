@@ -38,11 +38,6 @@ export class AuthDto{
     @IsEmpty()
     tokenHash : string;
 
-    @IsOptional()
-    @IsNumberString()
-    avatarId: string;
-
-
 }
 
 
